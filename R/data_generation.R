@@ -249,7 +249,7 @@ function_to_compute_simulations_multiFC <- function(variation){
 #' number times (iterations).
 #'
 #' @param variation list, list of data.frame containing the different input.
-#' parameter variations @describeIn function_to_compute_simulations.
+#' parameter variations @describeIn function_to_compute_simulations_multiFC.
 #' @param nb_sim numeric, number of simulation.
 #' @return list of simulated data. Each list member contains 5 slots:
 #'     - variation: the variation of input paramaters which has been used in input;
