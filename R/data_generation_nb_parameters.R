@@ -140,6 +140,12 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
   ## Select DE markers
   df_onlyDE <- dplyr::filter(df_isDE, isDEmarker == TRUE)
   DEmarkers_names <- as.vector(df_onlyDE$marker_name)
+
+  # Create a data.frame for experiment info
+  df_experiment_info_paired <-
+    unique(dplyr::select(mock_dataset_expdesign,
+                         c("group_id", "donor_id", "sample_id")))
+
   # Create list of simulated data
   return(list("df_info" = df_experiment_info_paired,
               "DEmarkers_names" = DEmarkers_names,
@@ -178,6 +184,9 @@ function_wrapper_apply_simulation_nbtimes_withmarkerinfo <- function(variation, 
   list_df_raw_data <- lapply(output, function(x) x$raw_data)
   # Extract the name(s) of the DE markers which are unique for all simulation of this iteration
   DEmarkers_names <- (unique(lapply(output, function(x) x$DEmarkers_names)))[[1]]
+  # if (length(DEmarkers_names) == 0){
+  #   DEmarkers_names <- NA
+  # }
   # Combine with the experimental info, with mock data and variation
   list_combined_output <- list("variation" = bind_rows(variation),
                                "df_info" = df_info,
