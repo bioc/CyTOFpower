@@ -79,9 +79,10 @@ function_to_transform_data <- function(data, cofactor = 5) {
 #'
 #' @param mock_dataset data.frame, containing the cell values for each marker.
 function_extract_marker_names <- function(mock_dataset){
-  # Get the index
-  idx <- grep("Marker", colnames(mock_dataset))
-  return(colnames(mock_dataset)[idx])
+  # # Get the index
+  # idx <- grep("Marker", colnames(mock_dataset))
+  # return(colnames(mock_dataset)[idx])
+  setdiff(colnames(mock_dataset), c("group_id", "donor_id", "sample_id"))
 }
 
 #' Generate name of the DE markers.
