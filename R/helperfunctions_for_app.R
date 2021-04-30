@@ -4,7 +4,7 @@ compute_pwr <- function(model_values, # Output of run_models()
   # Compute the power for each marker
   model_values %>%
     dplyr::filter(truth == 1) %>%
-    dplyr::group_by(model,marker_id) %>% #  rho, nb_donor, subject_effect, nb_DE_marker,  nb_cell_per_sample, total_nb_marker
+    dplyr::group_by(model, marker_id) %>% #  rho, nb_donor, subject_effect, nb_DE_marker,  nb_cell_per_sample, total_nb_marker
     dplyr::summarize(power = mean(p_adj < alpha))
 }
 
@@ -16,7 +16,7 @@ compute_variance <- function(raw_data_lg){
     dplyr::summarize(variance = var(raw_intensity))
   mean_obs_sample_variance <- obs_sample_variance %>%
     dplyr::group_by(donor_id) %>%
-    dplyr::summarize(mean_variance = round(mean(variance), digits = 2))
+    dplyr::summarize(variance = round(mean(variance), digits = 2))
 
   return(mean_obs_sample_variance)
 }
