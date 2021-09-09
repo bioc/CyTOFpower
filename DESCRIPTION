@@ -21,17 +21,15 @@ Imports:
   CytoGLMM,
   diffcyt,
   tidyverse,
-  dplyr,
-  plyr,
   ggplot2,
   knitr,
-  BiocParallel,
   magrittr,
-  cydar,
-  ncdfFlow,
-  ROCR,
-  ggpubr,
   stats,
   methods, 
+  shiny,
+  shinycssloaders,
+  shinyFeedback,
+  shinyjs,
+  shinyMatrix,
   SummarizedExperiment
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.2
