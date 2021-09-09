@@ -41,6 +41,10 @@ compute_effectsize <- function(raw_data_lg){
   ## Combine
   cb_raw_data <- dplyr::left_join(mean_diff_raw_data_summary_1_wd, sd_mean_raw_data_summary_1)
   eff_size_raw_data <- dplyr::summarize(cb_raw_data, effect_size = round(mean_diff / mean_sd, digits = 1), markers)
+  # Fold Change
+  obs_fc <- dplyr::summarize(mean_raw_data_summary_1_wd, observed_FC = round(B / A, digits = 1), markers)
 
-  return(eff_size_raw_data[,c("markers", "effect_size")])
+  # Return
+  res <- dplyr::left_join(eff_size_raw_data, obs_fc)
+  return(res[,c("markers", "effect_size", "observed_FC")])
 }
