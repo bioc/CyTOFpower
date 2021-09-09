@@ -72,56 +72,56 @@ function_run_bootstrapcytoGLMM <- function(mock_dataset, nb_bootstrap = 1000){
 
 ### Functions to run the models from the diffcyt package ###
 
-#' Create FlowSet.
+#' #' Create FlowSet.
+#' #'
+#' #' @details Function to prepare the data for the diffcyt package.
+#' #'
+#' #' @param df_experiment_info data.frame, information about the experiment (donor IDs,
+#' #' group IDs and sample IDs).
+#' #' @param mock_dataset data.frame, cell values for each marker.
+#' #'
+#' #' @return a FlowSet.
+#' function_prepare_data_for_diffcyt <- function(df_experiment_info, mock_dataset){
+#'   # # Data must be paired
+#'   # if(function_is_data_paired(df_experiment_info) == FALSE){
+#'   #   stop("The data is not paired, diffcyt model cannot be used")
+#'   # }
 #'
-#' @details Function to prepare the data for the diffcyt package.
+#'   # Creating a ncdfFlowset object
+#'   simcytof_ncdfFlowset <- list()
+#'   for (i in seq_along(df_experiment_info$group_id)) {
+#'     # mycombined_loop <- mock_dataset %>%
+#'     #   dplyr::filter(sample_id == paste0("sample_", i)) %>%
+#'     #   dplyr::select(-c("sample_id", "group_id", "donor_id"))
+#'     mock_dataset_filtered <- dplyr::filter(mock_dataset, .data$sample_id == paste0("sample_", i))
+#'     mycombined_loop <- dplyr::select(mock_dataset_filtered, -c("sample_id", "group_id", "donor_id"))
 #'
-#' @param df_experiment_info data.frame, information about the experiment (donor IDs,
-#' group IDs and sample IDs).
-#' @param mock_dataset data.frame, cell values for each marker.
+#'     onesample <- list(mycombined_loop[,,drop=FALSE])
+#'     names(onesample) <- paste0("Sample", i)
+#'     simcytof_ncdfFlowset[[i]] <- cydar::poolCells(onesample)
+#'   }
+#'   names(simcytof_ncdfFlowset) <- paste0("Sample", seq_along(df_experiment_info$group_id))
+#'   simcytof_ncdfFlowset <- ncdfFlow::ncdfFlowSet(as(simcytof_ncdfFlowset, "flowSet"))
 #'
-#' @return a FlowSet.
-function_prepare_data_for_diffcyt <- function(df_experiment_info, mock_dataset){
-  # # Data must be paired
-  # if(function_is_data_paired(df_experiment_info) == FALSE){
-  #   stop("The data is not paired, diffcyt model cannot be used")
-  # }
-
-  # Creating a ncdfFlowset object
-  simcytof_ncdfFlowset <- list()
-  for (i in seq_along(df_experiment_info$group_id)) {
-    # mycombined_loop <- mock_dataset %>%
-    #   dplyr::filter(sample_id == paste0("sample_", i)) %>%
-    #   dplyr::select(-c("sample_id", "group_id", "donor_id"))
-    mock_dataset_filtered <- dplyr::filter(mock_dataset, .data$sample_id == paste0("sample_", i))
-    mycombined_loop <- dplyr::select(mock_dataset_filtered, -c("sample_id", "group_id", "donor_id"))
-
-    onesample <- list(mycombined_loop[,,drop=FALSE])
-    names(onesample) <- paste0("Sample", i)
-    simcytof_ncdfFlowset[[i]] <- cydar::poolCells(onesample)
-  }
-  names(simcytof_ncdfFlowset) <- paste0("Sample", seq_along(df_experiment_info$group_id))
-  simcytof_ncdfFlowset <- ncdfFlow::ncdfFlowSet(as(simcytof_ncdfFlowset, "flowSet"))
-
-  # As flowSet
-  d_mock_flowset <- ncdfFlow::as.flowSet(simcytof_ncdfFlowset)
-  # Experiment info
-  mock_flowset_experimentinfo <- cbind(df_experiment_info, "cluster_id" = "pop1")
-  # Marker info
-  markers_names <- function_extract_marker_names(mock_dataset)
-  mock_flowset_markerinfo <- data.frame("channel_name" = markers_names,
-                                        "marker_name" = markers_names,
-                                        "marker_class" = "state")
-  #Prepare data
-  d_mock_flowset <- diffcyt::prepareData(d_mock_flowset,
-                                         mock_flowset_experimentinfo,
-                                         mock_flowset_markerinfo)
-  # We do not transform the data as they have been already transformed during the dataset creation
-  ## (see function function_create_mock_dataset_withsubjeff_vary_nanddelta)
-  ## d_mock_flowset_transformed <- transformData(d_mock_flowset)
-  #Return
-  return(d_mock_flowset)
-}
+#'   # As flowSet
+#'   d_mock_flowset <- ncdfFlow::as.flowSet(simcytof_ncdfFlowset)
+#'   # Experiment info
+#'   mock_flowset_experimentinfo <- cbind(df_experiment_info, "cluster_id" = "pop1")
+#'   # Marker info
+#'   markers_names <- function_extract_marker_names(mock_dataset)
+#'   mock_flowset_markerinfo <- data.frame("channel_name" = markers_names,
+#'                                         "marker_name" = markers_names,
+#'                                         "marker_class" = "state")
+#'   #Prepare data
+#'   d_mock_flowset <- diffcyt::prepareData(d_input = d_mock_flowset,
+#'                                          experiment_info = mock_flowset_experimentinfo,
+#'                                          marker_info = mock_flowset_markerinfo)
+#'   # We do not transform the data as they have been already transformed during the dataset creation
+#'   ## (see function function_create_mock_dataset_withsubjeff_vary_nanddelta)
+#'   ## d_mock_flowset_transformed <- transformData(d_mock_flowset)
+#'   #Return
+#'   return(d_mock_flowset)
+#' }
 
 #' Compute cells counts and medians.
 #'
@@ -270,24 +270,109 @@ function_run_diffcytDSLMM <- function(ls_form_contrast, df_experiment_info, ls_f
   return(ls_res)
 }
 
+#' #' Run diffcyt pipeline
+#' #'
+#' #' @details Function to run diffcyt pipeline. We do not used the diffcyt function
+#' #' directly because of the limma model run differently with the effects.
+#' #'
+#' #' @param df_experiment_info data.frame, information about the experiment (donor IDs,
+#' #' group IDs and sample IDs).
+#' #' @param mock_dataset data.frame, cell values for each marker.
+#' #' @param model character, model to run: "limma" or "LMM".
+#' #' @param effect character, effect: "random" or "fixed".
+#' #'
+#' #' @return list with 2 slots:
+#' #'     - model_fit: the model fit;
+#' #'     - result_summary: results of the model for each marker.
+#' function_run_diffcyt_full_pipeline <- function(df_experiment_info, mock_dataset,
+#'                                                model = c("limma", "LMM"), effect = c("random", "fixed")){
+#'   # Prepare data
+#'   d_flowset_broken <- function_prepare_data_for_diffcyt(df_experiment_info, mock_dataset)
+#'   ###### CAREFUL HACK ########
+#'   markers_names <- function_extract_marker_names(mock_dataset)
+#'   mock_flowset_markerinfo <- data.frame("channel_name" = markers_names,
+#'                                         "marker_name" = markers_names,
+#'                                         "marker_class" = "state")
+#'   d_flowset <- SummarizedExperiment(assays = list("exprs" = as.matrix(mock_dataset[, markers_names])),
+#'                        # rowData = data.frame(onemockdataset[,c("group_id", "donor_id", "sample_id")], "cluster_id" = "pop1",
+#'                        #                      stringsAsFactors = TRUE),
+#'                        rowData = rowData(d_flowset_broken),
+#'                        colData = mock_flowset_markerinfo,
+#'                        metadata = metadata(d_flowset_broken))
+#'   ########## END HACK ##########
+#'
+#'   # Compute features
+#'   ls_features <- function_compute_diffcyt_features(d_flowset)
+#'   # Create design matrix or formula and constrast depending on choosen model
+#'   if(model == "LMM"){
+#'     message("Run the LMM model, with random effect")
+#'     # Create formula and contrast
+#'     ls_form <- function_formula_contrast_diffcytDSLMM_randomeffect(df_experiment_info)
+#'     # Run the model
+#'     res <- function_run_diffcytDSLMM(ls_form, df_experiment_info, ls_features)
+#'   } else if(model == "limma" & effect == "random"){
+#'     message("Run the limma model with random effect")
+#'     # Create design matrix and contrast
+#'     ls_desig <- function_desigmat_contrast_diffcytDSlimma_randomeffect(df_experiment_info)
+#'     # Run the model
+#'     res <- function_run_diffcytDSlimma(ls_desig, df_experiment_info, ls_features)
+#'   } else if(model == "limma" & effect == "fixed"){
+#'     message("Run the limma model with fixed effect")
+#'     # Create design matrix and contrast
+#'     ls_desig <- function_desigmat_contrast_diffcytDSlimma_fixedeffect(df_experiment_info)
+#'     # Run the model
+#'     res <- function_run_diffcytDSlimma(ls_desig, df_experiment_info, ls_features)
+#'   } else {
+#'     stop("Model not correctly specified")
+#'   }
+#'   # Return
+#'   return(res)
+#' }
+
 #' Run diffcyt pipeline
 #'
 #' @details Function to run diffcyt pipeline. We do not used the diffcyt function
 #' directly because of the limma model run differently with the effects.
 #'
-#' @param df_experiment_info data.frame, information about the experiment (donor IDs,
-#' group IDs and sample IDs).
-#' @param mock_dataset data.frame, cell values for each marker.
+#' @param onevariation list, of simulated data (output of the
+#'   function_wrapper_apply_simulation_nbtimes function).
 #' @param model character, model to run: "limma" or "LMM".
 #' @param effect character, effect: "random" or "fixed".
 #'
 #' @return list with 2 slots:
 #'     - model_fit: the model fit;
 #'     - result_summary: results of the model for each marker.
-function_run_diffcyt_full_pipeline <- function(df_experiment_info, mock_dataset,
+function_run_diffcyt_full_pipeline <- function(onevariation,
                                                model = c("limma", "LMM"), effect = c("random", "fixed")){
   # Prepare data
-  d_flowset <- function_prepare_data_for_diffcyt(df_experiment_info, mock_dataset)
+  # Mock dataset
+  mock_dataset <- onevariation$ls_mock_data
+  # Experimental info
+  df_experiment_info <- onevariation$df_info
+  # Marker names
+  markers_names <- function_extract_marker_names(mock_dataset)
+  # Create metadata
+  # colData
+  mock_flowset_markerinfo <- data.frame("channel_name" = markers_names,
+                                        "marker_name" = markers_names,
+                                        "marker_class" = "state")
+  # rowData
+  se_df_info <- data.frame(mock_dataset[,c("group_id", "donor_id", "sample_id")],
+                           "cluster_id" = "pop1",
+                           stringsAsFactors = TRUE)
+  # Number of cells per sample
+  se_n_cells <- rep(unique(onevariation$variation$nb_cell_per_sample),
+                    each = length(onevariation$df_info$sample_id))
+  names(se_n_cells) <- paste0("Sample", 1:length(onevariation$df_info$sample_id))
+  # metadata
+  met <- list("experiment_info" = data.frame(onevariation$df_info,
+                                             "cluster_id" = "pop1"),
+              "n_cells" = se_n_cells)
+  # Create SummarizedExperiment
+  d_flowset <- SummarizedExperiment(assays = list("exprs" = as.matrix(mock_dataset[, markers_names])),
+                                    rowData = se_df_info,
+                                    colData = mock_flowset_markerinfo,
+                                    metadata = met)
   # Compute features
   ls_features <- function_compute_diffcyt_features(d_flowset)
   # Create design matrix or formula and constrast depending on choosen model
