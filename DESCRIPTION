@@ -20,16 +20,21 @@ Depends:
 Imports:
   CytoGLMM,
   diffcyt,
-  tidyverse,
+  DT,
+  dplyr,
   ggplot2,
   knitr,
   magrittr,
+  methods,
+  rlang,
   stats,
-  methods, 
   shiny,
   shinycssloaders,
   shinyFeedback,
   shinyjs,
   shinyMatrix,
-  SummarizedExperiment
+  SummarizedExperiment,
+  tibble,
+  tidyverse,
+  tidyr
 RoxygenNote: 7.1.2
