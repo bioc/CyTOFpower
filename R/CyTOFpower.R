@@ -7,4 +7,7 @@
 #' @name CyTOFpower
 #'
 #' @import shiny
+#'
+#' @importFrom rlang .data
+#' @importFrom magrittr "%>%"
 NULL
