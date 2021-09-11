@@ -95,7 +95,7 @@ function_to_compute_model_computation_onesimulation_modelchoice <- function(onev
   }
 
   # Combine p-val tables
-  allpval_res <- bind_rows(ls_res, .id = "model")
+  allpval_res <- dplyr::bind_rows(ls_res, .id = "model")
   # allpval_res <- cbind(allpval_res, onevariation$variation)
   # Add the information about the truth, i.e. which markers have DE by design
   allpval_res <- dplyr::mutate(allpval_res,
