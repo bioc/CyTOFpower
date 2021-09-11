@@ -72,57 +72,6 @@ function_run_bootstrapcytoGLMM <- function(mock_dataset, nb_bootstrap = 1000){
 
 ### Functions to run the models from the diffcyt package ###
 
-#' #' Create FlowSet.
-#' #'
-#' #' @details Function to prepare the data for the diffcyt package.
-#' #'
-#' #' @param df_experiment_info data.frame, information about the experiment (donor IDs,
-#' #' group IDs and sample IDs).
-#' #' @param mock_dataset data.frame, cell values for each marker.
-#' #'
-#' #' @return a FlowSet.
-#' function_prepare_data_for_diffcyt <- function(df_experiment_info, mock_dataset){
-#'   # # Data must be paired
-#'   # if(function_is_data_paired(df_experiment_info) == FALSE){
-#'   #   stop("The data is not paired, diffcyt model cannot be used")
-#'   # }
-#'
-#'   # Creating a ncdfFlowset object
-#'   simcytof_ncdfFlowset <- list()
-#'   for (i in seq_along(df_experiment_info$group_id)) {
-#'     # mycombined_loop <- mock_dataset %>%
-#'     #   dplyr::filter(sample_id == paste0("sample_", i)) %>%
-#'     #   dplyr::select(-c("sample_id", "group_id", "donor_id"))
-#'     mock_dataset_filtered <- dplyr::filter(mock_dataset, .data$sample_id == paste0("sample_", i))
-#'     mycombined_loop <- dplyr::select(mock_dataset_filtered, -c("sample_id", "group_id", "donor_id"))
-#'
-#'     onesample <- list(mycombined_loop[,,drop=FALSE])
-#'     names(onesample) <- paste0("Sample", i)
-#'     simcytof_ncdfFlowset[[i]] <- cydar::poolCells(onesample)
-#'   }
-#'   names(simcytof_ncdfFlowset) <- paste0("Sample", seq_along(df_experiment_info$group_id))
-#'   simcytof_ncdfFlowset <- ncdfFlow::ncdfFlowSet(as(simcytof_ncdfFlowset, "flowSet"))
-#'
-#'   # As flowSet
-#'   d_mock_flowset <- ncdfFlow::as.flowSet(simcytof_ncdfFlowset)
-#'   # Experiment info
-#'   mock_flowset_experimentinfo <- cbind(df_experiment_info, "cluster_id" = "pop1")
-#'   # Marker info
-#'   markers_names <- function_extract_marker_names(mock_dataset)
-#'   mock_flowset_markerinfo <- data.frame("channel_name" = markers_names,
-#'                                         "marker_name" = markers_names,
-#'                                         "marker_class" = "state")
-#'   #Prepare data
-#'   d_mock_flowset <- diffcyt::prepareData(d_input = d_mock_flowset,
-#'                                          experiment_info = mock_flowset_experimentinfo,
-#'                                          marker_info = mock_flowset_markerinfo)
-#'   # We do not transform the data as they have been already transformed during the dataset creation
-#'   ## (see function function_create_mock_dataset_withsubjeff_vary_nanddelta)
-#'   ## d_mock_flowset_transformed <- transformData(d_mock_flowset)
-#'   #Return
-#'   return(d_mock_flowset)
-#' }
-
 #' Compute cells counts and medians.
 #'
 #' @details Function to calculate features for diffcyt package models.
@@ -270,65 +219,6 @@ function_run_diffcytDSLMM <- function(ls_form_contrast, df_experiment_info, ls_f
   return(ls_res)
 }
 
-#' #' Run diffcyt pipeline
-#' #'
-#' #' @details Function to run diffcyt pipeline. We do not used the diffcyt function
-#' #' directly because of the limma model run differently with the effects.
-#' #'
-#' #' @param df_experiment_info data.frame, information about the experiment (donor IDs,
-#' #' group IDs and sample IDs).
-#' #' @param mock_dataset data.frame, cell values for each marker.
-#' #' @param model character, model to run: "limma" or "LMM".
-#' #' @param effect character, effect: "random" or "fixed".
-#' #'
-#' #' @return list with 2 slots:
-#' #'     - model_fit: the model fit;
-#' #'     - result_summary: results of the model for each marker.
-#' function_run_diffcyt_full_pipeline <- function(df_experiment_info, mock_dataset,
-#'                                                model = c("limma", "LMM"), effect = c("random", "fixed")){
-#'   # Prepare data
-#'   d_flowset_broken <- function_prepare_data_for_diffcyt(df_experiment_info, mock_dataset)
-#'   ###### CAREFUL HACK ########
-#'   markers_names <- function_extract_marker_names(mock_dataset)
-#'   mock_flowset_markerinfo <- data.frame("channel_name" = markers_names,
-#'                                         "marker_name" = markers_names,
-#'                                         "marker_class" = "state")
-#'   d_flowset <- SummarizedExperiment(assays = list("exprs" = as.matrix(mock_dataset[, markers_names])),
-#'                        # rowData = data.frame(onemockdataset[,c("group_id", "donor_id", "sample_id")], "cluster_id" = "pop1",
-#'                        #                      stringsAsFactors = TRUE),
-#'                        rowData = rowData(d_flowset_broken),
-#'                        colData = mock_flowset_markerinfo,
-#'                        metadata = metadata(d_flowset_broken))
-#'   ########## END HACK ##########
-#'
-#'   # Compute features
-#'   ls_features <- function_compute_diffcyt_features(d_flowset)
-#'   # Create design matrix or formula and constrast depending on choosen model
-#'   if(model == "LMM"){
-#'     message("Run the LMM model, with random effect")
-#'     # Create formula and contrast
-#'     ls_form <- function_formula_contrast_diffcytDSLMM_randomeffect(df_experiment_info)
-#'     # Run the model
-#'     res <- function_run_diffcytDSLMM(ls_form, df_experiment_info, ls_features)
-#'   } else if(model == "limma" & effect == "random"){
-#'     message("Run the limma model with random effect")
-#'     # Create design matrix and contrast
-#'     ls_desig <- function_desigmat_contrast_diffcytDSlimma_randomeffect(df_experiment_info)
-#'     # Run the model
-#'     res <- function_run_diffcytDSlimma(ls_desig, df_experiment_info, ls_features)
-#'   } else if(model == "limma" & effect == "fixed"){
-#'     message("Run the limma model with fixed effect")
-#'     # Create design matrix and contrast
-#'     ls_desig <- function_desigmat_contrast_diffcytDSlimma_fixedeffect(df_experiment_info)
-#'     # Run the model
-#'     res <- function_run_diffcytDSlimma(ls_desig, df_experiment_info, ls_features)
-#'   } else {
-#'     stop("Model not correctly specified")
-#'   }
-#'   # Return
-#'   return(res)
-#' }
-
 #' Run diffcyt pipeline
 #'
 #' @details Function to run diffcyt pipeline. We do not used the diffcyt function
@@ -369,7 +259,7 @@ function_run_diffcyt_full_pipeline <- function(onevariation,
                                              "cluster_id" = "pop1"),
               "n_cells" = se_n_cells)
   # Create SummarizedExperiment
-  d_flowset <- SummarizedExperiment(assays = list("exprs" = as.matrix(mock_dataset[, markers_names])),
+  d_flowset <- SummarizedExperiment::SummarizedExperiment(assays = list("exprs" = as.matrix(mock_dataset[, markers_names])),
                                     rowData = se_df_info,
                                     colData = mock_flowset_markerinfo,
                                     metadata = met)
@@ -401,51 +291,7 @@ function_run_diffcyt_full_pipeline <- function(onevariation,
   return(res)
 }
 
-#' Run DS tests for each simulation.
-#'
-#' @details Wrapper to run the models through the different simulations.
-#'
-#' @param list_combined_output list, of simulated data (output of the
-#' function_wrapper_apply_simulation_nbtimes function).
-#'
-#' @return data.frame of results for each simulation.
-function_wrapper_apply_modelcomputations_nbtimes <- function(list_combined_output) {
 
-  print(list_combined_output$variation)
-  # Number of simulation
-  nb_sim <- length(list_combined_output$ls_mock_data)
-  # Repeat model computation
-  res_output <- lapply(1:nb_sim, function(sim, var = list_combined_output){
-    function_to_compute_model_computation_from_simulations(sim, var)
-  })
-  names(res_output) <- seq_len(nb_sim)
 
-  # convert output to data.frame
-  dplyr::bind_rows(res_output, .id = "i")
-}
 
-#' Run DS tests for each simulation.
-#'
-#' @details Wrapper to run the models through the different simulations.
-#'
-#' @param list_combined_output list, of simulated data (output of the
-#' function_wrapper_apply_simulation_nbtimes function).
-#' @param model vector, name(s) of models to test.
-#'
-#' @return data.frame of results for each simulation.
-function_wrapper_apply_modelcomputations_nbtimes_modelchoice <- function(list_combined_output,
-                                                                         model = c("cytoglmm", "cytoglm", "testDS_limma_random", "testDS_limma_fixed", "testDS_lmm")) {
 
-  print(list_combined_output$variation)
-  # Number of simulation
-  nb_sim <- length(list_combined_output$ls_mock_data)
-  # Repeat model computation
-  res_output <- lapply(1:nb_sim, function(sim, var = list_combined_output, mod = model){
-    function_to_compute_model_computation_from_simulations_modelchoice(simulation = sim, onevariation = var, model = mod)
-  })
-  names(res_output) <- seq_len(nb_sim)
-
-  # convert output to data.frame
-  df_res_output <- dplyr::bind_rows(res_output, .id = "i")
-  cbind(df_res_output, list_combined_output$variation)
-}
