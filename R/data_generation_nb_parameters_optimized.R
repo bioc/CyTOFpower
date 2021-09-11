@@ -110,7 +110,7 @@ function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
 #' @param rho numeric, fold change.
 #' @param mu0 numeric, general donor mean from which the individual mu0i will
 #' be drawn.
-#' @param dispersion_marker numeric, dispersion of the markers.
+#' @param dispersion numeric, dispersion of the markers.
 #' @param subject_effect numeric, standard deviation for the normal distribution from
 #' which the donor's means will be drawn (by default subject_effect = 0.01).
 #' @param nb_cell_per_sample numeric, number of cells per sample (by default nb_cell_per_sample = 500).
@@ -135,7 +135,7 @@ function_value_onemarker <- function(marker_name,
   ## Scale
   theta <- subject_effect^2 / mu0
   ## mu0i
-  mu0i <- rgamma(nb_donor, shape = k, scale = theta)
+  mu0i <- stats::rgamma(nb_donor, shape = k, scale = theta)
   # Compute mu_1 (mean DE marker) based on donor mean
   mu_1i <- rho*mu0i
 
@@ -143,10 +143,10 @@ function_value_onemarker <- function(marker_name,
   raw_mock_dataset_expdesign <- lapply(1:nb_donor, function(i_donor){
     # Cell values
     ## Condition A
-    condition_A <- matrix(rnbinom(n = nb_cell_per_sample, mu = mu0i[i_donor],
+    condition_A <- matrix(stats::rnbinom(n = nb_cell_per_sample, mu = mu0i[i_donor],
                                   size = dispersion))
     # Condition B
-    condition_B <- matrix(rnbinom(n = nb_cell_per_sample, mu = mu_1i[i_donor],
+    condition_B <- matrix(stats::rnbinom(n = nb_cell_per_sample, mu = mu_1i[i_donor],
                                   size = dispersion))
 
     # Combine matrices
@@ -165,7 +165,7 @@ function_value_onemarker <- function(marker_name,
                                                         by = c("donor_id", "group_id"))
     return(combined_matrices_raw_expdesign)
   })
-  raw_mock_dataset_expdesign <- bind_rows(raw_mock_dataset_expdesign)
+  raw_mock_dataset_expdesign <- dplyr::bind_rows(raw_mock_dataset_expdesign)
   raw_mock_dataset_expdesign$group_id <- as.factor(raw_mock_dataset_expdesign$group_id)
   raw_mock_dataset_expdesign$marker_name <- marker_name
 
@@ -210,15 +210,15 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
                                   raw_mock_dataset_expdesign_w)
   # Create long formats
   raw_mock_dataset_expdesign <- raw_mock_dataset_expdesign_w %>%
-    dplyr::group_by(marker_name) %>%
-    dplyr::mutate(rn = row_number()) %>% # recreated unique identifier column
-    tidyr::pivot_wider(names_from = marker_name, values_from = count)
+    dplyr::group_by(.data$marker_name) %>%
+    dplyr::mutate(rn = dplyr::row_number()) %>% # recreated unique identifier column
+    tidyr::pivot_wider(names_from = .data$marker_name, values_from = .data$count)
   raw_mock_dataset_expdesign$rn <- NULL
   mock_dataset_expdesign <- mock_dataset_expdesign_w %>%
-    dplyr::select(-c(count)) %>%
-    dplyr::group_by(marker_name) %>%
-    dplyr::mutate(rn = row_number()) %>% # recreated unique identifier column
-    tidyr::pivot_wider(names_from = marker_name, values_from = transformed_values)
+    dplyr::select(-c(.data$count)) %>%
+    dplyr::group_by(.data$marker_name) %>%
+    dplyr::mutate(rn = dplyr::row_number()) %>% # recreated unique identifier column
+    tidyr::pivot_wider(names_from = .data$marker_name, values_from = .data$transformed_values)
   mock_dataset_expdesign$rn <- NULL
   # Which markers are DE?
   # ls_isDE <- lapply(variation, function(onemarker){
@@ -236,7 +236,7 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
   # ## Select DE markers
   # df_onlyDE <- dplyr::filter(df_isDE, isDEmarker == TRUE)
   df_var <- dplyr::bind_rows(variation)
-  df_onlyDE <- dplyr::filter(df_var, rho != 1)
+  df_onlyDE <- dplyr::filter(df_var, .data$rho != 1)
   DEmarkers_names <- as.vector(df_onlyDE$marker_name)
 
   # Create a data.frame for experiment info
