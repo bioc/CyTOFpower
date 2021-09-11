@@ -270,129 +270,129 @@ myserver <- function(input, output, session){
 
     # system.file("extdata", "df_precomputed_datasets.txt")
     # browser()
-    p_data <- read.table("../inst/extdata/df_precomputed_datasets.txt")
+    p_data <- utils::read.table("../inst/extdata/df_precomputed_datasets.txt")
 
     if ( input$p_nb_donors == "NA" )  { # If no donor
       p_data_filtered <- dplyr::filter(p_data,
-                                       rho == input$p_fc &
-                                         model == input$p_modelcheckGroup &
-                                         nb_cell_per_sample == input$p_nb_cells &
-                                         subject_effect == input$p_subeff &
-                                         total_nb_markers == input$p_total_nb_markers &
-                                         mu0 == input$p_mu0 &
-                                         dispersion == input$p_dispersion)
+                                       .data$rho == input$p_fc &
+                                         .data$model == input$p_modelcheckGroup &
+                                         .data$nb_cell_per_sample == input$p_nb_cells &
+                                         .data$subject_effect == input$p_subeff &
+                                         .data$total_nb_markers == input$p_total_nb_markers &
+                                         .data$mu0 == input$p_mu0 &
+                                         .data$dispersion == input$p_dispersion)
       output$p_plot_pwr_nbdonors <- renderPlot({
-        ggplot(p_data_filtered, aes_string(x = "nb_donor", y = "power")) +
-          geom_point() +
-          geom_line() +
-          scale_y_continuous(limits = c(0, 1)) +
-          labs(title = "Plot of power by number of donors",
+        ggplot2::ggplot(p_data_filtered, ggplot2::aes_string(x = "nb_donor", y = "power")) +
+          ggplot2::geom_point() +
+          ggplot2::geom_line() +
+          ggplot2::scale_y_continuous(limits = c(0, 1)) +
+          ggplot2::labs(title = "Plot of power by number of donors",
                x = "Number of donors", y = "Power") +
-          theme_bw()
+          ggplot2::theme_bw()
       })
     } else if ( input$p_nb_cells == "NA" ) { # If no number of cells
       p_data_filtered <- dplyr::filter(p_data,
-                                       rho == input$p_fc &
-                                         model == input$p_modelcheckGroup &
-                                         nb_donor == input$p_nb_donors &
-                                         subject_effect == input$p_subeff &
-                                         total_nb_markers == input$p_total_nb_markers &
-                                         mu0 == input$p_mu0 &
-                                         dispersion == input$p_dispersion)
+                                       .data$rho == input$p_fc &
+                                         .data$model == input$p_modelcheckGroup &
+                                         .data$nb_donor == input$p_nb_donors &
+                                         .data$subject_effect == input$p_subeff &
+                                         .data$total_nb_markers == input$p_total_nb_markers &
+                                         .data$mu0 == input$p_mu0 &
+                                         .data$dispersion == input$p_dispersion)
       output$p_plot_pwr_nbcells <- renderPlot({
-        ggplot(p_data_filtered, aes_string(x = "nb_cell_per_sample", y = "power")) +
-          geom_point() +
-          geom_line() +
-          scale_y_continuous(limits = c(0, 1)) +
-          labs(title = "Plot of power by number of cells",
+        ggplot2::ggplot(p_data_filtered, ggplot2::aes_string(x = "nb_cell_per_sample", y = "power")) +
+          ggplot2::geom_point() +
+          ggplot2::geom_line() +
+          ggplot2::scale_y_continuous(limits = c(0, 1)) +
+          ggplot2::labs(title = "Plot of power by number of cells",
                x = "Number of cells per sample", y = "Power") +
-          theme_bw()
+          ggplot2::theme_bw()
       })
     } else if ( input$p_subeff == "NA" )  { # If no subject effect
       p_data_filtered <- dplyr::filter(p_data,
-                                       rho == input$p_fc &
-                                         model == input$p_modelcheckGroup &
-                                         nb_cell_per_sample == input$p_nb_cells &
-                                         nb_donor == input$p_nb_donors &
-                                         total_nb_markers == input$p_total_nb_markers &
-                                         mu0 == input$p_mu0 &
-                                         dispersion == input$p_dispersion)
+                                       .data$rho == input$p_fc &
+                                         .data$model == input$p_modelcheckGroup &
+                                         .data$nb_cell_per_sample == input$p_nb_cells &
+                                         .data$nb_donor == input$p_nb_donors &
+                                         .data$total_nb_markers == input$p_total_nb_markers &
+                                         .data$mu0 == input$p_mu0 &
+                                         .data$dispersion == input$p_dispersion)
       output$p_plot_pwr_subject_effect <- renderPlot({
-        ggplot(p_data_filtered, aes_string(x = "subject_effect", y = "power")) +
-          geom_point() +
-          geom_line() +
-          scale_y_continuous(limits = c(0, 1)) +
-          labs(title = "Plot of power by subject effect",
+        ggplot2::ggplot(p_data_filtered, ggplot2::aes_string(x = "subject_effect", y = "power")) +
+          ggplot2::geom_point() +
+          ggplot2::geom_line() +
+          ggplot2::scale_y_continuous(limits = c(0, 1)) +
+          ggplot2::labs(title = "Plot of power by subject effect",
                x = "Subject Effect", y = "Power") +
-          theme_bw()
+          ggplot2::theme_bw()
       })
     } else if ( input$p_total_nb_markers == "NA" )  { # If no total number of markers
       p_data_filtered <- dplyr::filter(p_data,
-                                       rho == input$p_fc &
-                                         model == input$p_modelcheckGroup &
-                                         nb_cell_per_sample == input$p_nb_cells &
-                                         subject_effect == input$p_subeff &
-                                         nb_donor == input$p_nb_donors &
-                                         mu0 == input$p_mu0 &
-                                         dispersion == input$p_dispersion)
+                                       .data$rho == input$p_fc &
+                                         .data$model == input$p_modelcheckGroup &
+                                         .data$nb_cell_per_sample == input$p_nb_cells &
+                                         .data$subject_effect == input$p_subeff &
+                                         .data$nb_donor == input$p_nb_donors &
+                                         .data$mu0 == input$p_mu0 &
+                                         .data$dispersion == input$p_dispersion)
       output$p_plot_pwr_total_nb_markers <- renderPlot({
-        ggplot(p_data_filtered, aes_string(x = "total_nb_markers", y = "power")) +
-          geom_point() +
-          geom_line() +
-          scale_y_continuous(limits = c(0, 1)) +
-          labs(title = "Plot of power by the total number of markers",
+        ggplot2::ggplot(p_data_filtered, ggplot2::aes_string(x = "total_nb_markers", y = "power")) +
+          ggplot2::geom_point() +
+          ggplot2::geom_line() +
+          ggplot2::scale_y_continuous(limits = c(0, 1)) +
+          ggplot2::labs(title = "Plot of power by the total number of markers",
                x = "Total number of markers", y = "Power") +
-          theme_bw()
+          ggplot2::theme_bw()
       })
     } else if ( input$p_mu0 == "NA" )  { # If no mu0
       p_data_filtered <- dplyr::filter(p_data,
-                                       rho == input$p_fc &
-                                         model == input$p_modelcheckGroup &
-                                         nb_cell_per_sample == input$p_nb_cells &
-                                         subject_effect == input$p_subeff &
-                                         nb_donor == input$p_nb_donors &
-                                         total_nb_markers == input$p_total_nb_markers &
-                                         dispersion == input$p_dispersion)
+                                       .data$rho == input$p_fc &
+                                         .data$model == input$p_modelcheckGroup &
+                                         .data$nb_cell_per_sample == input$p_nb_cells &
+                                         .data$subject_effect == input$p_subeff &
+                                         .data$nb_donor == input$p_nb_donors &
+                                         .data$total_nb_markers == input$p_total_nb_markers &
+                                         .data$dispersion == input$p_dispersion)
       output$p_plot_pwr_mu0 <- renderPlot({
-        ggplot(p_data_filtered, aes_string(x = "mu0", y = "power")) +
-          geom_point() +
-          geom_line() +
-          scale_y_continuous(limits = c(0, 1)) +
-          labs(title = "Plot of power by NB marker mean",
+        ggplot2::ggplot(p_data_filtered, ggplot2::aes_string(x = "mu0", y = "power")) +
+          ggplot2::geom_point() +
+          ggplot2::geom_line() +
+          ggplot2::scale_y_continuous(limits = c(0, 1)) +
+          ggplot2::labs(title = "Plot of power by NB marker mean",
                x = "Mean mu_0", y = "Power") +
-          theme_bw()
+          ggplot2::theme_bw()
       })
     } else if ( input$p_dispersion == "NA" )  { # If no dispersion
       p_data_filtered <- dplyr::filter(p_data,
-                                       rho == input$p_fc &
-                                         model == input$p_modelcheckGroup &
-                                         nb_cell_per_sample == input$p_nb_cells &
-                                         subject_effect == input$p_subeff &
-                                         nb_donor == input$p_nb_donors &
-                                         total_nb_markers == input$p_total_nb_markers &
-                                         mu0 == input$p_mu0)
+                                       .data$rho == input$p_fc &
+                                         .data$model == input$p_modelcheckGroup &
+                                         .data$nb_cell_per_sample == input$p_nb_cells &
+                                         .data$subject_effect == input$p_subeff &
+                                         .data$nb_donor == input$p_nb_donors &
+                                         .data$total_nb_markers == input$p_total_nb_markers &
+                                         .data$mu0 == input$p_mu0)
       output$p_plot_pwr_dispersion <- renderPlot({
-        ggplot(p_data_filtered, aes_string(x = "dispersion", y = "power")) +
-          geom_point() +
-          geom_line() +
-          scale_y_continuous(limits = c(0, 1)) +
-          labs(title = "Plot of power by NB marker dispersion",
+        ggplot2::ggplot(p_data_filtered, ggplot2::aes_string(x = "dispersion", y = "power")) +
+          ggplot2::geom_point() +
+          ggplot2::geom_line() +
+          ggplot2::scale_y_continuous(limits = c(0, 1)) +
+          ggplot2::labs(title = "Plot of power by NB marker dispersion",
                x = "Dispersion", y = "Power") +
-          theme_bw()
+          ggplot2::theme_bw()
       })
     } else {
       p_data_filtered <- dplyr::filter(p_data,
-                                       rho == input$p_fc &
-                                         model == input$p_modelcheckGroup &
-                                         nb_cell_per_sample == input$p_nb_cells &
-                                         subject_effect == input$p_subeff &
-                                         nb_donor == input$p_nb_donors &
-                                         total_nb_markers == input$p_total_nb_markers &
-                                         mu0 == input$p_mu0 &
-                                         dispersion == input$p_dispersion)
+                                       .data$rho == input$p_fc &
+                                         .data$model == input$p_modelcheckGroup &
+                                         .data$nb_cell_per_sample == input$p_nb_cells &
+                                         .data$subject_effect == input$p_subeff &
+                                         .data$nb_donor == input$p_nb_donors &
+                                         .data$total_nb_markers == input$p_total_nb_markers &
+                                         .data$mu0 == input$p_mu0 &
+                                         .data$dispersion == input$p_dispersion)
 
       output$p_power <- renderText(
-        paste0("Power = ", dplyr::pull(p_data_filtered, power)))
+        paste0("Power = ", dplyr::pull(p_data_filtered, .data$power)))
     }
 
   })
@@ -407,7 +407,7 @@ myserver <- function(input, output, session){
 
   # Matrix of parameters
   output$matrix <- renderUI({
-    matrixInput(inputId = "param",
+    shinyMatrix::matrixInput(inputId = "param",
                 label = "Parameters per marker",
                 rows = list(
                   names = TRUE,
@@ -443,7 +443,7 @@ myserver <- function(input, output, session){
   observeEvent(input$goButton,
                {
                  # Extract matrix of parameters informations
-                 df_param <- rownames_to_column(as.data.frame(input$param),
+                 df_param <- tibble::rownames_to_column(as.data.frame(input$param),
                                                 var = "marker_name")
                  colnames(df_param) <- c("marker_name", "rho", "mu0", "disp")
 
@@ -547,20 +547,21 @@ myserver <- function(input, output, session){
                  }), .id = "i"))
                  ## mean
                  df_obs_variance <- df_obs_variance_persim %>%
-                   group_by(donor_id) %>%
-                   dplyr::summarize(variance = round(mean(variance), digits = 2))
+                   dplyr::group_by(.data$donor_id) %>%
+                   dplyr::summarize(variance = round(mean(.data$variance), digits = 2))
                  # Effect size
                  df_obs_effectsize_persim <- do.call("bind_rows", list(lapply(ls_res, function(x){
                    x[["obs_effectsize"]]
                  }), .id = "i"))
                  ## Mean
                  df_obs_effectsize <- df_obs_effectsize_persim %>%
-                   group_by(markers) %>%
-                   dplyr::summarize(effect_size = round(mean(effect_size), digits = 1), observed_FC = round(mean(observed_FC), digits = 1))
+                   dplyr::group_by(.data$markers) %>%
+                   dplyr::summarize(effect_size = round(mean(.data$effect_size), digits = 1),
+                                    observed_FC = round(mean(.data$observed_FC), digits = 1))
 
                  # Name of DE(s) markers
                  df_var <- dplyr::bind_rows(ls_variation)
-                 df_var_DE <- dplyr::filter(df_var, rho != 1)
+                 df_var_DE <- dplyr::filter(df_var, .data$rho != 1)
                  output$DE_names <- renderText(
                    paste("Name(s) of the DE markers:", paste(df_var_DE$marker_name, collapse = "; "))
                  )
@@ -597,21 +598,22 @@ myserver <- function(input, output, session){
                  ## Plot
                  if(length(input$modelcheckGroup) > 1){
                    output$plot_pwr_eff <- renderPlot({
-                     ggplot(pwr_eff, aes_string(x = "effect_size", y = "power", col = "model")) +
-                       geom_point(size = 2, position = position_jitter(width = 0.01, height = 0.01)) + #position = "jitter" position = position_jitter()
-                       ylim(0, 1.3) +
-                       labs(title="Plot of power by effect size",
+                     ggplot2::ggplot(pwr_eff, ggplot2::aes_string(x = "effect_size", y = "power", col = "model")) +
+                       ggplot2::geom_point(size = 2,
+                                           position = ggplot2::position_jitter(width = 0.01, height = 0.01)) + #position = "jitter" position = position_jitter()
+                       ggplot2::ylim(0, 1.3) +
+                       ggplot2::labs(title="Plot of power by effect size",
                             x ="Cohen effect size", y = "Power") +
-                       theme_bw()
+                       ggplot2::theme_bw()
                    })
                  } else{
                    output$plot_pwr_eff <- renderPlot({
-                     ggplot(pwr_eff, aes_string(x = "effect_size", y = "power", col = "model")) +
-                       geom_point(size = 2) + #position = "jitter" position = position_jitter()
-                       ylim(0, 1) +
-                       labs(title="Plot of power by effect size",
+                     ggplot2::ggplot(pwr_eff, ggplot2::aes_string(x = "effect_size", y = "power", col = "model")) +
+                       ggplot2::geom_point(size = 2) + #position = "jitter" position = position_jitter()
+                       ggplot2::ylim(0, 1) +
+                       ggplot2::labs(title="Plot of power by effect size",
                             x ="Cohen effect size", y = "Power") +
-                       theme_bw()
+                       ggplot2::theme_bw()
                    })
                  }
 
