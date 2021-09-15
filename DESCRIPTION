@@ -1,40 +1,37 @@
 Package: CyTOFpower
 Type: Package
 Title: Power analysis for CyTOF experiments
-Version: 0.1.0
-Author: 
-    person(given = "Anne-Maud",
-           family = "Ferreira",
-           role = c("aut", "cre"),
+Version: 0.99.0
+Authors@R: 
+    person("Anne-Maud", "Ferreira",
            email = "anne-maud.ferreira@epfedu.fr",
+           role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-4749-746X"))
-Maintainer: The package maintainer <anne-maud.ferreira@epfedu.fr>
 Description: The goal of this package is to predict the power of CyTOF 
-    experiments based on some assumptions made on the number of markers, number
+    experiments. The package provides a way to generate in-sicilico CyTOF data
+    using users input on for instance the number of markers, the number
     of cells, or the expected fold change for the differential expressed markers.
+    The data are run through a GLMM model and the power is computed.
+biocViews: FlowCytometry, SingleCell, CellBiology, StatisticalMethod, Software
 License: LGPL-3
 Encoding: UTF-8
-LazyData: true
 Depends:
-    R (>= 4.0)
+    R (>= 4.1)
 Imports:
   CytoGLMM,
   diffcyt,
   DT,
   dplyr,
   ggplot2,
-  knitr,
   magrittr,
   methods,
   rlang,
   stats,
   shiny,
-  shinycssloaders,
   shinyFeedback,
   shinyjs,
   shinyMatrix,
   SummarizedExperiment,
   tibble,
-  tidyverse,
   tidyr
 RoxygenNote: 7.1.2
