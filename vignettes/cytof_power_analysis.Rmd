@@ -1,0 +1,11 @@
+---
+title: "Power analysis for CyTOF experiments"
+author: "Anne-Maud Ferreira"
+package: CyTOFpower
+date: "`r Sys.Date()`"
+output: BiocStyle::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Power analysis for CyTOF experiments}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}  
+---
