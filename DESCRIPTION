@@ -35,3 +35,5 @@ Imports:
   tibble,
   tidyr
 RoxygenNote: 7.1.2
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr
