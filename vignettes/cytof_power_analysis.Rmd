@@ -3,9 +3,109 @@ title: "Power analysis for CyTOF experiments"
 author: "Anne-Maud Ferreira"
 package: CyTOFpower
 date: "`r Sys.Date()`"
-output: BiocStyle::html_vignette
+output: BiocStyle::html_document
 vignette: >
     %\VignetteIndexEntry{Power analysis for CyTOF experiments}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}  
 ---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+Mass Spectrometry (or CyTOF) is a single cell technology. It measures up to 
+50 protein markers on a single cell. The markers are antibodies labeled with 
+stable isotopes and they might be markers of cell types or phenotypes.
+
+CyTOF might be used to determine if there is any differences in cell abundances 
+(type markers) or cell phenotypes (state markers) between two experimental 
+conditions. In this package, we are proposing a tool to predict the power of a 
+differential state test analysis.
+
+Two packages are available on Bioconductor to perform differential state test 
+analyses: CytoGLMM [ref to add] and diffcyt [ref to add].
+These models are available in this package and their results, the adjusted p-value
+per marker, are used to compute the power an experiment.
+
+## Installation
+
+## Simulate in-silico data
+
+In-silico CyTOF data are simulated using the following data generation process:
+
+- the number of donors: the design of the data is paired, so the number of samples
+will be calculated accordingly, twice the number of donors;
+- the subject effect: it defines how different the donors are from each others;
+- the number of cells per samples;
+- the total number of markers tested in the experiment;
+- the fold change \rho of each differentially expressed marker: the mean of these
+markers will be multiplied by \rho in one condition;
+- the distribution parameters for each marker: see details below.
+
+The mean of each marker is drawn from a Gamma distribution: 
+$$\mu_{0,ij} \sim \Gamma(k, θ)$$
+where $i$ the donor, $j$ the marker, $k$ the shape and $\theta$ the scale. 
+These two last parameters are defined using the parameters provided by the user: 
+
+- mean $\mu_{0}$: with $\mu_{0} = k  \cdot \theta > 0$
+- subject effect $S$: $S = \sqrt{k  \cdot \theta^{2}}$
+
+The mean of the differentially expressed marker(s) is then multiplied by the 
+fold change defined earlier: $\mu_{1,ij}= \mu_{0,ij} \cdot \rho_j$
+
+
+The cell values are drawn using a Negative Binomial:
+
+- for non-differentially expressed markers: $X_{ij} \sim NB(\mu_{0,ij}, \sigma)$
+- for differentially expressed markers: $X_{ij} \sim NB(\mu_{1,ij}, \sigma)$
+
+
+## Shiny app
+
+The shiny app is divided into two tabs: (1) the precomputed dataset tab: the
+power was pre-computed for multiple combinations of parameters and the user is
+able to search this grid of parameters; (2) the personalized dataset tab: the 
+data and the power is computated on request based on the parameters choosen by
+the user.
+
+### Precomputed dataset 
+
+This panel allows the user to search a grid of parameters that have been pre-computed. 
+The value "NA" displays a power curve for the different values of this parameter.
+
+The available parameters that the user can choose from are the following:
+
+- The number of donors
+- The subject effect
+- The number of cells per sample
+- The total number of markers
+- The marker’s Fold Change (FC): 1.1, 1.2, 1.3, 1.5, 1.8, 2, 3
+- The mean of the Negative Binomial for the marker that is considered
+- The dispersion of the Negative Binomial for the marker that is considered
+- Models to run: CytoGLMM - GLMM; diffcyt - limma with fixed effect; 
+diffcyt - limma with random effect; diffcyt - lme4
+
+### Personalized dataset
+This panel allows the user to compute the power for a chosen set of parameters. 
+The data are generated on request and it takes some time to get the results.
+
+The available parameters that the user can choose from are the following:
+
+- The number of donors: at least 3 donors
+- The subject effect that must be different from 0
+- The number of cells per sample (minimum 10 cells)
+- The total number of markers (minimum 3 markers)
+- For each marker: the fold change; the mean and the dispersion have to be 
+specified in the matrix
+- Model to run: CytoGLMM - GLMM; diffcyt - limma with fixed effect; 
+diffcyt - limma with random effect; diffcyt - lme4
+- The number of simulations: we recommend at least 10 simulations
+
+
+
