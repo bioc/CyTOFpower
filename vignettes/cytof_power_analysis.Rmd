@@ -8,6 +8,7 @@ vignette: >
     %\VignetteIndexEntry{Power analysis for CyTOF experiments}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}  
+bibliography: CyTOFpower.bib
 ---
 
 ```{r, include=FALSE}
@@ -29,7 +30,7 @@ conditions. In this package, we are proposing a tool to predict the power of a
 differential state test analysis.
 
 Two packages are available on Bioconductor to perform differential state test 
-analyses: CytoGLMM [ref to add] and diffcyt [ref to add].
+analyses: CytoGLMM [@seiler2020cytoglmm] and diffcyt [@weber2019diffcyt].
 These models are available in this package and their results, the adjusted p-value
 per marker, are used to compute the power an experiment.
 
@@ -92,6 +93,7 @@ The available parameters that the user can choose from are the following:
 diffcyt - limma with random effect; diffcyt - lme4
 
 ### Personalized dataset
+
 This panel allows the user to compute the power for a chosen set of parameters. 
 The data are generated on request and it takes some time to get the results.
 
