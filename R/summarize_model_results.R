@@ -15,13 +15,18 @@ function_summary_results_models <- function(summary_from_model, package){
   package <- match.arg(package, choices = c("CytoGLMM", "diffcyt"))
   message("Using package: ", package)
 
-  ## Rename colnames
-  ### if the cytoGLMM package has been used, the colnames in the results table is "protein_name"
+  # Rename colnames
+  # if the cytoGLMM package has been used, the column name in the results table
+  # is "protein_name"
   if(package == "CytoGLMM"){
     res_sum <- as.data.frame(summary_from_model$result_summary)
     colnames(res_sum) <- c("marker_id", "p_val", "p_adj")
-  } else if(package =="diffcyt"){ ## if the diffcyt package has been used, the colnames in the results table is "marker_id"
-    res_sum <- as.data.frame(summary_from_model$result_summary[,c("marker_id", "p_val", "p_adj")])
+  } else if(package =="diffcyt"){
+    # if the diffcyt package has been used, the column name in the results table
+    # is "marker_id"
+    res_sum <- as.data.frame(summary_from_model$result_summary[,c("marker_id",
+                                                                  "p_val",
+                                                                  "p_adj")])
   }
   # Return
   return(as.data.frame(res_sum))
