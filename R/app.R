@@ -418,7 +418,7 @@ myserver <- function(input, output, session){
                 value = matrix(rep(c(1, 12, 3), input$nb_tot_markers),
                                ncol = 3,
                                byrow = TRUE,
-                               dimnames = list(c(paste0("m_", 1:input$nb_tot_markers)),
+                               dimnames = list(c(paste0("m_", seq_len(input$nb_tot_markers))),
                                                c("Fold Change", "Mean", "Dispersion")))
     )
   })
@@ -495,7 +495,7 @@ myserver <- function(input, output, session){
 
                  # Generate the data
                  withProgress(message = 'Generating data', value = 0, {
-                   ls_variation <- lapply(1:input$nb_tot_markers, function(i){
+                   ls_variation <- lapply(seq_len(input$nb_tot_markers), function(i){
                      data.frame(
                        "marker_name" = df_param[i, "marker_name"],
                        "mu0" = as.numeric(df_param[i, "mu0"]),
@@ -507,7 +507,7 @@ myserver <- function(input, output, session){
                        "rho" = as.numeric(df_param[i, "rho"]))
                    })
                    # Pipeline
-                   ls_res <- lapply(1:input$nb_sim, function(sim_id){
+                   ls_res <- lapply(seq_len(input$nb_sim), function(sim_id){
                      # (1) generate a single dataset
                      sim_data <- function_apply_onesimulation_withmarkerinfo(ls_variation)
                      # (2) apply methods

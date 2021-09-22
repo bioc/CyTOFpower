@@ -95,7 +95,7 @@ function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
   # Number
   #nb <- seq(from = (total_nb_marker - nb_DE_marker)+1, to = total_nb_marker)
   # Name
-  paste("Marker", 1:nb_DE_marker, sep = "")
+  paste("Marker", seq_len(nb_DE_marker), sep = "")
 }
 
 ### Function to create data ###
@@ -124,9 +124,9 @@ function_value_onemarker <- function(marker_name,
 
   # Create a data.frame for experiment info
   df_experiment_info_paired <-
-    data.frame(donor_id = rep(paste0("donor_", 1:nb_donor), 2),
+    data.frame(donor_id = rep(paste0("donor_", seq_len(nb_donor)), 2),
                group_id = rep(c("A", "B"), each=nb_donor),
-               sample_id = paste("sample_", 1:(nb_donor*2), sep = ""))
+               sample_id = paste("sample_", seq_len(nb_donor*2), sep = ""))
 
 
   # Compute mu0i for each donor
@@ -140,7 +140,7 @@ function_value_onemarker <- function(marker_name,
   mu_1i <- rho*mu0i
 
   # Per donor
-  raw_mock_dataset_expdesign <- lapply(1:nb_donor, function(i_donor){
+  raw_mock_dataset_expdesign <- lapply(seq_len(nb_donor), function(i_donor){
     # Cell values
     ## Condition A
     condition_A <- matrix(stats::rnbinom(n = nb_cell_per_sample, mu = mu0i[i_donor],

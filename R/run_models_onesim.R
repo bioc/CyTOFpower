@@ -15,7 +15,7 @@ function_apply_modelcomputations_modelchoice <- function(list_combined_output,
   res_output <-
     function_to_compute_model_computation_onesimulation_modelchoice(onevariation = list_combined_output,
                                                                        model = model)
-  row.names(res_output) <- 1:dim(res_output)[1]
+  row.names(res_output) <- seq_len(dim(res_output)[1])
   # Return
   return(res_output)
 }

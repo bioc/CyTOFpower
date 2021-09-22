@@ -253,7 +253,7 @@ function_run_diffcyt_full_pipeline <- function(onevariation,
   # Number of cells per sample
   se_n_cells <- rep(unique(onevariation$variation$nb_cell_per_sample),
                     each = length(onevariation$df_info$sample_id))
-  names(se_n_cells) <- paste0("Sample", 1:length(onevariation$df_info$sample_id))
+  names(se_n_cells) <- paste0("Sample", seq_len(length(onevariation$df_info$sample_id)))
   # metadata
   met <- list("experiment_info" = data.frame(onevariation$df_info,
                                              "cluster_id" = "pop1"),
