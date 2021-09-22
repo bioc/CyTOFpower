@@ -4,6 +4,8 @@
 #'
 #' @param model_values data.frame, output of run_models()
 #' @param alpha numeric, significance level
+#'
+#' @return numeric, power
 compute_pwr <- function(model_values,
                         alpha = 0.05){
   model_values %>%
@@ -17,6 +19,8 @@ compute_pwr <- function(model_values,
 #' @details Compute the observed variance in the data
 #'
 #' @param raw_data_lg data.frame, cells values in long format
+#'
+#' @return numeric, observed variance mean
 compute_variance <- function(raw_data_lg){
   # Sample variance
   obs_sample_variance <- raw_data_lg %>%
@@ -35,6 +39,9 @@ compute_variance <- function(raw_data_lg){
 #' @details Compute observed Cohen's effect size and observed fold change
 #'
 #' @param raw_data_lg data.frame, cells values in long format
+#'
+#' @return data.frame, Cohen's effect size and fold change that were observed
+#' in the data for each marker
 compute_effectsize <- function(raw_data_lg){
   # Effect size
   ## Mean
