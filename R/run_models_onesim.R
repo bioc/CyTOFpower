@@ -8,13 +8,17 @@
 #'
 #' @return data.frame of results for each simulation.
 function_apply_modelcomputations_modelchoice <- function(list_combined_output,
-                                                          model = c("cytoglmm", "cytoglm", "testDS_limma_random", "testDS_limma_fixed", "testDS_lmm")) {
+                                                          model = c("cytoglmm",
+                                                                    "cytoglm",
+                                                                    "testDS_limma_random",
+                                                                    "testDS_limma_fixed",
+                                                                    "testDS_lmm")) {
 
   print(list_combined_output$variation)
   # Repeat model computation
   res_output <-
     function_to_compute_model_computation_onesimulation_modelchoice(onevariation = list_combined_output,
-                                                                       model = model)
+                                                                    model = model)
   row.names(res_output) <- seq_len(dim(res_output)[1])
   # Return
   return(res_output)
@@ -29,7 +33,8 @@ function_apply_modelcomputations_modelchoice <- function(list_combined_output,
 #' @param model vector, name(s) of models to test.
 #'
 #' @return data.frame of results for each simulation all models combined.
-function_to_compute_model_computation_onesimulation_modelchoice <- function(onevariation, model){
+function_to_compute_model_computation_onesimulation_modelchoice <- function(onevariation,
+                                                                            model){
   # Split info from the mock datasets
   # df_exp_info <- onevariation$df_info
   onemockdataset <- onevariation$ls_mock_data
