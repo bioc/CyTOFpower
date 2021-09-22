@@ -8,6 +8,8 @@
 #'
 #' @param data data.frame, experimental information containing (sample IDS,
 #' donor IDs).
+#'
+#' @return logical, TRUE is the data are paired - FALSE if the data are not paired
 function_is_data_paired <- function(data){
   # Number of samples
   nb_samples <- length(unique(data$sample_id))
@@ -33,6 +35,9 @@ function_is_data_paired <- function(data){
 #'
 #' @param nb_markers numeric, total number of markers.
 #' @param nb_DEmarker numeric, number of differentially expressed markers.
+#'
+#' @return error message if the number of DE markers is greater than the total
+#' number of markers.
 function_DEmarkers_sup_nbmarkers <- function(nb_markers, nb_DEmarker){
   if(nb_markers < nb_DEmarker){
     stop("Number of markers is not greater than number of differentially expressed makers")
@@ -41,9 +46,11 @@ function_DEmarkers_sup_nbmarkers <- function(nb_markers, nb_DEmarker){
 
 #' Number of markers greater than 2.
 #'
-#' @details Function to check that the number of markers is greater than 2
+#' @details Function to check that the number of markers is greater than 2.
 #'
 #' @param nb_marker numeric, total number of markers.
+#'
+#' @return error message if the total number of markers is lower than 3.
 function_check_nbmarkers <- function(nb_marker){
   if(nb_marker < 3){
     stop("Number of markers should be greater than 2")
@@ -55,6 +62,8 @@ function_check_nbmarkers <- function(nb_marker){
 #' @details Function to check that the number of DE markers is greater than 1.
 #'
 #' @param nb_DEmarker numeric, number of differentially expressed markers.
+#'
+#' @return error message
 function_check_nbDEmarkers <- function(nb_DEmarker){
   if(nb_DEmarker < 1){
     stop("Number of markers should be greater than 0")
@@ -69,6 +78,8 @@ function_check_nbDEmarkers <- function(nb_DEmarker){
 #' @param data data.frame, cell values to transform.
 #' @param cofactor numeric, co-factor used in the arcsinh (by default
 #' cofactor = 5).
+#'
+#' @return data.frame of transformed data.
 function_to_transform_data <- function(data, cofactor = 5) {
   asinh(data/cofactor)
 }
@@ -80,6 +91,8 @@ function_to_transform_data <- function(data, cofactor = 5) {
 #' @details Function to extract the marker names.
 #'
 #' @param mock_dataset data.frame, containing the cell values for each marker.
+#'
+#' @return vector of marker names.
 function_extract_marker_names <- function(mock_dataset){
   # # Get the index
   # idx <- grep("Marker", colnames(mock_dataset))
@@ -93,6 +106,8 @@ function_extract_marker_names <- function(mock_dataset){
 #'
 #' @param total_nb_marker numeric, total number of markers.
 #' @param nb_DE_marker numeric, number of DE markers.
+#'
+#' @return vactor of marker names.
 function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
   # Number
   #nb <- seq(from = (total_nb_marker - nb_DE_marker)+1, to = total_nb_marker)
@@ -117,6 +132,8 @@ function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
 #' from which the donor's means will be drawn (by default subject_effect = 0.01).
 #' @param nb_cell_per_sample numeric, number of cells per sample (by default
 #' nb_cell_per_sample = 500).
+#'
+#' @return data.frame of cell values.
 function_value_onemarker <- function(marker_name,
                                      mu0,
                                      dispersion,
@@ -194,6 +211,12 @@ function_value_onemarker <- function(marker_name,
 #'     - dispersion: dispersion of the negative binomial from
 #'     which the DE marker's cell values will be drawn;
 #'     - nb_cell_per_sample: number of cells per sample.
+#'
+#' @return list with 4 slots:
+#'     - df_info: data.frame of experimental information;
+#'     - DEmarkers_names: vector of DE marker names;
+#'     - raw_data: data.frame of raw cell values;
+#'     - data: data.frame of transformed cell values.
 function_create_mock_dataset_withmarkerinfo <- function(variation){
   # Generate values for all markers
   ls_raw_mock_dataset_expdesign <- lapply(variation, function(onemarker) {
@@ -265,6 +288,7 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
 #'
 #' @param variation list, list of list containing the different input
 #' parameter variations @describeIn function_create_mock_dataset_withmarkerinfo.
+#'
 #' @return list of simulated data. Each list member contains 5 slots:
 #'     - variation: the variation of input paramaters which has been used in input;
 #'     - df_info: experimental information (donor IDs, group IDs, samples IDs);
