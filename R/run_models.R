@@ -56,7 +56,8 @@ function_run_bootstrapcytoGLMM <- function(mock_dataset, nb_bootstrap = 1000){
   glm_fit_bootstrap <- CytoGLMM::cytoglm(mock_dataset,
                                          num_boot = nb_bootstrap,
                                          protein_names = markers_names,
-                                         condition = "group_id", group = "donor_id")
+                                         condition = "group_id",
+                                         group = "donor_id")
   # Plot the effects
   plot_effects_bootstrap <- plot(glm_fit_bootstrap)
   # Summary
@@ -86,7 +87,8 @@ function_compute_diffcyt_features <- function(mock_flowset){
   # Cluster medians
   d_mock_flowset_medians <- diffcyt::calcMedians(mock_flowset)
   # Return
-  return(list("counts" = d_mock_flowset_counts, "medians" = d_mock_flowset_medians))
+  return(list("counts" = d_mock_flowset_counts,
+              "medians" = d_mock_flowset_medians))
 }
 
 #' Design and contrast matrices for diffcyt-DS-limma with random effect.
@@ -103,13 +105,16 @@ function_compute_diffcyt_features <- function(mock_flowset){
 #'     - effect: the specification of the "random" effect.
 function_desigmat_contrast_diffcytDSlimma_randomeffect <- function(df_experiment_info){
   # Create design matrix
-  designmatrix <- diffcyt::createDesignMatrix(df_experiment_info, cols_design = c("group_id"))
+  designmatrix <- diffcyt::createDesignMatrix(df_experiment_info,
+                                              cols_design = c("group_id"))
   # Create contrast
   contrast <- diffcyt::createContrast(c(0, 1))
   # Assign a variable for the effect
   effect <- "random"
   # Return
-  return(list("design_matrix" = designmatrix, "contrast" = contrast, "effect" = effect))
+  return(list("design_matrix" = designmatrix,
+              "contrast" = contrast,
+              "effect" = effect))
 }
 
 #' Design and contrast matrices for diffcyt-DS-limma with fixed effect.
@@ -125,13 +130,16 @@ function_desigmat_contrast_diffcytDSlimma_randomeffect <- function(df_experiment
 #'     - effect: the specification of the "fixed" effect.
 function_desigmat_contrast_diffcytDSlimma_fixedeffect <- function(df_experiment_info){
   # Create design matrix
-  designmatrix <- diffcyt::createDesignMatrix(df_experiment_info, cols_design = c("group_id", "donor_id"))
+  designmatrix <- diffcyt::createDesignMatrix(df_experiment_info,
+                                              cols_design = c("group_id", "donor_id"))
   # Create contrast
   contrast <- diffcyt::createContrast(c(0, 1, rep(0, dim(designmatrix)[2]-2)))
   # Assign a variable for the effect
   effect <- "fixed"
   # Return
-  return(list("design_matrix" = designmatrix, "contrast" = contrast, "effect" = effect))
+  return(list("design_matrix" = designmatrix,
+              "contrast" = contrast,
+              "effect" = effect))
 }
 
 #' Run diffcyt-DS-limma model.
@@ -146,7 +154,9 @@ function_desigmat_contrast_diffcytDSlimma_fixedeffect <- function(df_experiment_
 #' @return list with 2 slots:
 #'     - model_fit: the model fit;
 #'     - result_summary: results of the model for each marker.
-function_run_diffcytDSlimma <- function(ls_desigmat_contrast, df_experiment_info, ls_features){
+function_run_diffcytDSlimma <- function(ls_desigmat_contrast,
+                                        df_experiment_info,
+                                        ls_features){
   # Run the model depending on the effects (random or fixed)
   if(ls_desigmat_contrast$effect == "random"){
     message("Running diffcyt-DS-limma model with random effect")
@@ -190,7 +200,8 @@ function_formula_contrast_diffcytDSLMM_randomeffect <- function(df_experiment_in
   # Create contrast
   contrast_withrandomeffect <- diffcyt::createContrast(c(0, 1)) # no 0 for the random effect
   # Return
-  return(list("formula" = formula_withrandomeffect, "contrast" = contrast_withrandomeffect))
+  return(list("formula" = formula_withrandomeffect,
+              "contrast" = contrast_withrandomeffect))
 }
 
 #' Run diffcyt-DS-LMM model.
@@ -213,9 +224,11 @@ function_run_diffcytDSLMM <- function(ls_form_contrast, df_experiment_info, ls_f
     formula = ls_form_contrast$formula,
     contrast = ls_form_contrast$contrast)
   # Results
-  table_res_mock_flowset <- SummarizedExperiment::rowData(res_mock_flowset, format_vals = TRUE)
+  table_res_mock_flowset <- SummarizedExperiment::rowData(res_mock_flowset,
+                                                          format_vals = TRUE)
   # Return
-  ls_res <- list("model_fit" = res_mock_flowset, "result_summary" = table_res_mock_flowset)
+  ls_res <- list("model_fit" = res_mock_flowset,
+                 "result_summary" = table_res_mock_flowset)
   return(ls_res)
 }
 
@@ -233,7 +246,8 @@ function_run_diffcytDSLMM <- function(ls_form_contrast, df_experiment_info, ls_f
 #'     - model_fit: the model fit;
 #'     - result_summary: results of the model for each marker.
 function_run_diffcyt_full_pipeline <- function(onevariation,
-                                               model = c("limma", "LMM"), effect = c("random", "fixed")){
+                                               model = c("limma", "LMM"),
+                                               effect = c("random", "fixed")){
   # Prepare data
   # Mock dataset
   mock_dataset <- onevariation$ls_mock_data
@@ -253,16 +267,18 @@ function_run_diffcyt_full_pipeline <- function(onevariation,
   # Number of cells per sample
   se_n_cells <- rep(unique(onevariation$variation$nb_cell_per_sample),
                     each = length(onevariation$df_info$sample_id))
-  names(se_n_cells) <- paste0("Sample", seq_len(length(onevariation$df_info$sample_id)))
+  names(se_n_cells) <- paste0("Sample",
+                              seq_len(length(onevariation$df_info$sample_id)))
   # metadata
   met <- list("experiment_info" = data.frame(onevariation$df_info,
                                              "cluster_id" = "pop1"),
               "n_cells" = se_n_cells)
   # Create SummarizedExperiment
-  d_flowset <- SummarizedExperiment::SummarizedExperiment(assays = list("exprs" = as.matrix(mock_dataset[, markers_names])),
-                                    rowData = se_df_info,
-                                    colData = mock_flowset_markerinfo,
-                                    metadata = met)
+  d_flowset <- SummarizedExperiment::SummarizedExperiment(
+    assays = list("exprs" = as.matrix(mock_dataset[, markers_names])),
+    rowData = se_df_info,
+    colData = mock_flowset_markerinfo,
+    metadata = met)
   # Compute features
   ls_features <- function_compute_diffcyt_features(d_flowset)
   # Create design matrix or formula and constrast depending on choosen model
