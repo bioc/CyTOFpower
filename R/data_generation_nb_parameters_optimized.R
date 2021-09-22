@@ -28,7 +28,8 @@ function_is_data_paired <- function(data){
 
 #' Check on the number of DE markers.
 #'
-#' @details Function to check that number of DE markers greater than number of markers.
+#' @details Function to check that number of DE markers greater than number of
+#' markers.
 #'
 #' @param nb_markers numeric, total number of markers.
 #' @param nb_DEmarker numeric, number of differentially expressed markers.
@@ -66,7 +67,8 @@ function_check_nbDEmarkers <- function(nb_DEmarker){
 #' for cyTOF data: arcsinh with cofactor equals to 5.
 #'
 #' @param data data.frame, cell values to transform.
-#' @param cofactor numeric, co-factor used in the arcsinh (by default cofactor = 5).
+#' @param cofactor numeric, co-factor used in the arcsinh (by default
+#' cofactor = 5).
 function_to_transform_data <- function(data, cofactor = 5) {
   asinh(data/cofactor)
 }
@@ -102,8 +104,8 @@ function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
 
 #' Compute simulated cell values for one marker with markers NB informations
 #'
-#' @details Function to generate value for one marker with a mean and dispersion specified
-#' for the negative binomiale.
+#' @details Function to generate value for one marker with a mean and dispersion
+#' specified for the negative binomiale.
 #'
 #' @param marker_name character, name of the marker.
 #' @param nb_donor numeric, number of donors.
@@ -111,9 +113,10 @@ function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
 #' @param mu0 numeric, general donor mean from which the individual mu0i will
 #' be drawn.
 #' @param dispersion numeric, dispersion of the markers.
-#' @param subject_effect numeric, standard deviation for the normal distribution from
-#' which the donor's means will be drawn (by default subject_effect = 0.01).
-#' @param nb_cell_per_sample numeric, number of cells per sample (by default nb_cell_per_sample = 500).
+#' @param subject_effect numeric, standard deviation for the normal distribution
+#' from which the donor's means will be drawn (by default subject_effect = 0.01).
+#' @param nb_cell_per_sample numeric, number of cells per sample (by default
+#' nb_cell_per_sample = 500).
 function_value_onemarker <- function(marker_name,
                                      mu0,
                                      dispersion,
@@ -176,8 +179,8 @@ function_value_onemarker <- function(marker_name,
 #' Compute simulated cell values for one simulation with markers NB information.
 #'
 #' @details Function to compute the simulated cell values using a combination of
-#' variable parameters, when we have prior information about the markers distribution
-#' parameters (mean and dispersion of the negative binomial).
+#' variable parameters, when we have prior information about the markers
+#' distribution parameters (mean and dispersion of the negative binomial).
 #'
 #' @param variation list, list of data.frames containing the different variable
 #' input paramaters to generate the data:
@@ -218,7 +221,8 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
     dplyr::select(-c(.data$count)) %>%
     dplyr::group_by(.data$marker_name) %>%
     dplyr::mutate(rn = dplyr::row_number()) %>% # recreated unique identifier column
-    tidyr::pivot_wider(names_from = .data$marker_name, values_from = .data$transformed_values)
+    tidyr::pivot_wider(names_from = .data$marker_name,
+                       values_from = .data$transformed_values)
   mock_dataset_expdesign$rn <- NULL
   # Which markers are DE?
   # ls_isDE <- lapply(variation, function(onemarker){
@@ -256,8 +260,8 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
 #' One simulation with markers NB information.
 #'
 #' @details Apply one simulation for a given parameter combination
-#' number times (iterations), when we have prior information about the markers distribution
-#' parameters (mean and dispersion of the negative binomial).
+#' number times (iterations), when we have prior information about the markers
+#' distribution parameters (mean and dispersion of the negative binomial).
 #'
 #' @param variation list, list of list containing the different input
 #' parameter variations @describeIn function_create_mock_dataset_withmarkerinfo.
