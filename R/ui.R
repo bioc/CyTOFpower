@@ -59,14 +59,6 @@ appUI <- fluidPage(
                                                      "diffcyt - limma with fixed effect" = "testDS_limma_fixed",
                                                      "diffcyt - limma with random effect" = "testDS_limma_random",
                                                      "diffcyt - lme4" = "testDS_lmm")),
-                          # checkboxGroupInput(inputId = "p_modelcheckGroup",
-                          #                    label = "Models to run",
-                          #                    choices = list("CytoGLMM - GLMM" = "cytoglmm",
-                          #                                   # "CytoGLMM - GLM with bootstrap" = "cytoglm",
-                          #                                   "diffcyt - limma with fixed effect" = "testDS_limma_fixed",
-                          #                                   "diffcyt - limma with random effect" = "testDS_limma_random",
-                          #                                   "diffcyt - lme4" = "testDS_lmm"),
-                          #                    selected = "cytoglmm"),
 
                           # Input: Action button to submit the parameters
                           actionButton(inputId = "p_goButton",

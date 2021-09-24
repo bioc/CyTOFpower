@@ -5,38 +5,6 @@ appServer <- function(input, output, session){
   observeEvent(input$p_goButton,{
 
     # Warning on NA
-    # na_error <- reactive({
-    #   # Create a vector checking if all possible parameters == NA
-    #   na_tf <- c(input$p_nb_cells == "NA",
-    #              input$p_nb_donors == "NA",
-    #              input$p_subeff == "NA",
-    #              input$p_mu0 == "NA",
-    #              input$p_dispersion == "NA")
-    #   # Count the number of NA
-    #   nb_na <- sum(na_tf, na.rm=TRUE)
-    #   # Is the number of NA above 1
-    #   nb_na_error <- nb_na > 1
-    #   # Display message for the parameters equal to NA
-    #   # v_param <- c("p_nb_cells",
-    #   #              "p_nb_donors",
-    #   #              "p_subeff",
-    #   #              "p_mu0",
-    #   #              "p_dispersion")
-    #   # sapply(v_param, function(param_name){
-    #   #   shinyFeedback::feedbackDanger(param_name, nb_na_error, "Only one NA is acceptable")
-    #   # })
-    #   # shinyFeedback::feedbackDanger("p_nb_donors", nb_na_error, "Only one NA is acceptable")
-    #   # if (input$p_nb_donors == "NA") {
-    #   #   shinyFeedback::feedbackDanger("p_nb_donors", nb_na_error, "Only one NA is acceptable")
-    #   # } else if (input$p_subeff == "NA") {
-    #   #   shinyFeedback::feedbackDanger("p_subeff", nb_na_error, "Only one NA is acceptable")
-    #   # }
-    #   browser()
-    #   if (nb_na_error){
-    #     validate("Only one NA is acceptable")
-    #   }
-    # })
-    # output$na_error <- renderText(na_error())
     observe({
       # Create a vector checking if all possible parameters == NA
       na_tf <- c(input$p_nb_cells == "NA",
@@ -56,13 +24,12 @@ appServer <- function(input, output, session){
       }
     })
 
-    # system.file("extdata", "df_precomputed_datasets.txt")
-    # browser()
-    # p_data <- utils::read.table("../inst/extdata/df_precomputed_datasets.txt")
+    # Read data
     p_data <- utils::read.table(system.file("extdata",
                                             "df_precomputed_datasets.txt",
                                             package = "CyTOFpower"))
 
+    # Plot curve
     if ( input$p_nb_donors == "NA" )  { # If no donor
       p_data_filtered <- dplyr::filter(p_data,
                                        .data$rho == input$p_fc &
@@ -172,6 +139,7 @@ appServer <- function(input, output, session){
           ggplot2::theme_bw()
       })
     } else {
+      # Display value
       p_data_filtered <- dplyr::filter(p_data,
                                        .data$rho == input$p_fc &
                                          .data$model == input$p_modelcheckGroup &
@@ -247,26 +215,22 @@ appServer <- function(input, output, session){
                    # input$goButton
                    isolate({
                      # Introduction sentence
-                     str_intro <- paste("For this simulation, you have selected the following parameters:", sep = "\n")
+                     str_intro <- paste("For this simulation, you have selected
+                                        the following parameters:", sep = "\n")
                      # Number of donors
                      str_nbdonor <- paste("Number of donors: ", input$nb_donors)
                      # Subject effect
                      str_subeff <- paste("Subject effect: ", input$subeff)
                      # Number of cells per sample
-                     str_nbcells <- paste("Number of cells per sample: ", input$nb_cells)
+                     str_nbcells <- paste("Number of cells per sample: ",
+                                          input$nb_cells)
                      # Total number of markers
-                     # str_totnbmarker <- paste("Total number of markers: ", input$nb_tot_markers)
                      str_totnbmarker <- paste("Total number of markers: ", dim(df_param)[1])
-                     # # Number of DE markers
-                     # str_nbDEmarker <- paste("Number of markers: ", input$nb_DEmarkers)
                      # Fold change
-                     # str_rho <- paste("Fold change of the marker(s): ", paste0(df_rho(), collapse = "; ")) #input$rho)
                      str_rho <- paste("Fold change of the marker(s): ", paste0(df_param$rho, collapse = "; "))
                      # Mu0
-                     # str_mu0 <- paste("Mean of the marker(s): ", paste0(df_mu0(), collapse = "; "))
                      str_mu0 <- paste("Mean of the marker(s): ", paste0(df_param$mu0, collapse = "; "))
                      # Dispersion
-                     # str_disp <- paste("Dispersion of the marker(s): ", paste0(df_disp(), collapse = "; "))
                      str_disp <- paste("Dispersion of the marker(s): ", paste0(df_param$disp, collapse = "; "))
                      # Model to run
                      col_modelcheckGroup <- paste(input$modelcheckGroup, collapse = ", ")
@@ -364,16 +328,6 @@ appServer <- function(input, output, session){
                  output$title_effsize <- renderText(paste("Observed Cohen's effect size"))
                  output$tab_obs_effectsize <- DT::renderDataTable({df_obs_effectsize}, options = list(pageLength = 5))
                  output$results_models <- DT::renderDataTable({df_res_models})
-                 # Plot - p-values distribution
-                 # browser()
-                 # output$plot_pval_dist <- renderPlot({
-                 #   ggplot(df_res_models, aes_string(x = "p_adj")) +
-                 #     geom_histogram() +
-                 #     facet_wrap(~ model + marker_id) +
-                 #     labs(title="P-values distribution") +
-                 #     theme_bw()
-                 # })
-
 
                  # Compute power
                  withProgress(message = "Compute power", value = 0, {
