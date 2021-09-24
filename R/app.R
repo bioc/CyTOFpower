@@ -18,8 +18,10 @@ list_param_precomupteddataset <-list(
 #'
 #' @return Shiny app.
 #' @examples
-#' # Open the shiny app
-#' CyTOFpower()
+#' # Launch the shiny app
+#' if (interactive()) {
+#'   CyTOFpower()
+#' }
 #' @export
 CyTOFpower <- function(){
   app <- shinyApp(ui = appUI, server = appServer)
