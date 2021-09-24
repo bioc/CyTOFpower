@@ -79,13 +79,20 @@ available datasets. For instance, the dispersion and mean parameters of the
 negative binomial distribution might be estimated using `fitdistr` from the 
 `MASS` package for each markers.
 
+## Power computation
+
+The power is computed for the differentially expressed marker(s) (i.e. fold change
+different from 1). It is based on the adjusted p-values reported by the models:
+counting how many times the null hypothesis is correctly rejected.
+It is also important to note that the power returned by these computations uses
+the threshold of $\alpha = 0.05$ as a significance level.
 
 ## Shiny app
 
 The shiny app is divided into two tabs: (1) the precomputed dataset tab: the
 power was pre-computed for multiple combinations of parameters and the user is
 able to search this grid of parameters; (2) the personalized dataset tab: the 
-data and the power is computated on request based on the parameters chosen by
+data and the power is computed on request based on the parameters chosen by
 the user.
 
 ### Precomputed dataset 
