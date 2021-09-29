@@ -6,8 +6,12 @@
 #' @docType package
 #' @name CyTOFpower
 #'
+#' @import methods
 #' @import shiny
 #'
+#' @importFrom shinyjs useShinyjs
+#' @importFrom shinyFeedback useShinyFeedback
 #' @importFrom rlang .data
 #' @importFrom magrittr "%>%"
+#' @importFrom dplyr bind_rows
 NULL
