@@ -2,16 +2,21 @@ Package: CyTOFpower
 Type: Package
 Title: Power analysis for CyTOF experiments
 Version: 0.99.0
-Authors@R: 
-    person("Anne-Maud", "Ferreira",
-           email = "anne-maud.ferreira@epfedu.fr",
+Authors@R: c(person("Anne-Maud", "Ferreira",
+           email = "anne-maud.ferreira@stanford.edu",
            role = c("cre", "aut"),
-           comment = c(ORCID = "0000-0002-4749-746X"))
+           comment = c(ORCID = "0000-0002-4749-746X")),
+    person("Catherine", "Blish",
+            email = "",
+            role = c("aut")),
+    person("Susan", "Holmes",
+            email = "sph@stanford.edu",
+            role = c("aut")))
 Description: This package is a tool to predict the power of CyTOF 
-experiments, where differential state analyses are performed. 
-The package provides a shiny app with two of checking for the power:
-i. generation of in-sicilico CyTOF data, using users input ii. browsing
-in a grid of parameters where the power was already precomputed.
+    experiments, where differential state analyses are performed. The package provides 
+    a shiny app with two of checking for the power: i. generation of in-sicilico CyTOF 
+    data, using users input ii. browsing in a grid of parameters where the power was 
+    already precomputed.
 biocViews: FlowCytometry, SingleCell, CellBiology, StatisticalMethod, Software
 License: LGPL-3
 Encoding: UTF-8
