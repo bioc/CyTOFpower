@@ -36,4 +36,8 @@ Imports:
   tidyr
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
-Suggests: BiocStyle, knitr
+Suggests: 
+    testthat (>= 3.0.0),
+    BiocStyle,
+    knitr
+Config/testthat/edition: 3
