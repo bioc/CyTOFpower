@@ -1,6 +1,6 @@
 # Data for shiny interface
-precomputed_data <- utils::read.table(system.file("extdata",
-                                        "df_precomputed_datasets.txt",
+precomputed_data <- readRDS(system.file("extdata",
+                                        "df_precomputed_datasets.rds",
                                         package = "CyTOFpower"))
 list_param_precomupteddataset <-list(
   "nb_donor" = c(sort(unique(precomputed_data$nb_donor)), NA),

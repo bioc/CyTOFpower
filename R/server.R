@@ -25,9 +25,9 @@ appServer <- function(input, output, session){
     })
 
     # Read data
-    p_data <- utils::read.table(system.file("extdata",
-                                            "df_precomputed_datasets.txt",
-                                            package = "CyTOFpower"))
+    p_data <- readRDS(system.file("extdata",
+                                  "df_precomputed_datasets.rds",
+                                  package = "CyTOFpower"))
 
     # Plot curve
     if ( input$p_nb_donors == "NA" )  { # If no donor
