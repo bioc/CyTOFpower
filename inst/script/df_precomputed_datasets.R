@@ -66,7 +66,7 @@ df_res_models <- do.call("bind_rows", list(lapply(ls_res, function(x){
   x[["res_models"]]
 }), .id = "i"))
 # Power was computed for alpha = 0.05
-pwr_values <- CyTOFpower::compute_pwr(df_res_models)
+pwr_values <- CyTOFpower:::compute_pwr(df_res_models)
 colnames(pwr_values)[2] <- "marker_name"
 pwr_values <- left_join(pwr_values,
                         df_var)
