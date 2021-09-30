@@ -10,10 +10,21 @@ experiment. One part generates in-sicilico CyTOF data, using users input paramet
 change for the differential expressed markers). And the other part allows the user 
 to browse in a grid of parameters for which the power was precomputed.
 
+# Installation
+
+To install the package from github:
+
+```r
+if (!requireNamespace("devtools", quietly = TRUE)){
+     install.packages("devtools")
+}
+devtools::install_github("FerreiraAM/CyTOFpower")
+```
+
 ## Example
 
 More information are available in the vignette:
 
-```	r
+```r
 vignette("CyTOFpower", package = "CyTOFpower")
 ```
