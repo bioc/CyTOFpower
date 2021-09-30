@@ -7,11 +7,11 @@ Authors@R:
            email = "anne-maud.ferreira@epfedu.fr",
            role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-4749-746X"))
-Description: The goal of this package is to predict the power of CyTOF 
-    experiments. The package provides a way to generate in-sicilico CyTOF data
-    using users input on for instance the number of markers, the number
-    of cells, or the expected fold change for the differential expressed markers.
-    The data are run through a GLMM model and the power is computed.
+Description: This package is a tool to predict the power of CyTOF 
+experiments, where differential state analyses are performed. 
+The package provides a shiny app with two of checking for the power:
+i. generation of in-sicilico CyTOF data, using users input ii. browsing
+in a grid of parameters where the power was already precomputed.
 biocViews: FlowCytometry, SingleCell, CellBiology, StatisticalMethod, Software
 License: LGPL-3
 Encoding: UTF-8
