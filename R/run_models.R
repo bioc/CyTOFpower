@@ -45,7 +45,7 @@ function_run_cytoGLMM <- function(mock_dataset){
 #'     - plot: plot of the effects;
 #'     - results_summary: data.frame containing the results of the models for
 #'     each marker.
-function_run_bootstrapcytoGLMM <- function(mock_dataset, nb_bootstrap = 1000){
+function_run_bootstrapcytoGLMM <- function(mock_dataset, nb_bootstrap = 500){
   # # Data must be paired
   # if(function_is_data_paired(mock_dataset$df_info)){
   #   message("The data is paired, GLMM can also be used")
