@@ -66,8 +66,6 @@ function_to_compute_model_computation_onesimulation_modelchoice <- function(onev
   if (any(model %in% "testDS_limma_random")) {
     ### limma random
     ls_diffcyt_limma_random <- function_run_diffcyt_full_pipeline(onevariation = onevariation,
-                                                                  # df_experiment_info = df_exp_info,
-                                                                  # mock_dataset = onemockdataset,
                                                                   model = "limma",
                                                                   effect = "random")
     #### All p-values
@@ -78,8 +76,6 @@ function_to_compute_model_computation_onesimulation_modelchoice <- function(onev
   if (any(model %in% "testDS_limma_fixed")) {
     ### limma fixed
     ls_diffcyt_limma_fixed <- function_run_diffcyt_full_pipeline(onevariation = onevariation,
-                                                                 # df_experiment_info = df_exp_info,
-                                                                 # mock_dataset = onemockdataset,
                                                                  model = "limma",
                                                                  effect = "fixed")
     #### All p-values
@@ -90,8 +86,6 @@ function_to_compute_model_computation_onesimulation_modelchoice <- function(onev
   if (any(model %in% "testDS_lmm") ) {
     ### LMM
     ls_diffcyt_LMM_random <- function_run_diffcyt_full_pipeline(onevariation = onevariation,
-                                                                # df_experiment_info = df_exp_info,
-                                                                # mock_dataset = onemockdataset,
                                                                 model = "LMM",
                                                                 effect = "random")
     #### All p-values
@@ -101,7 +95,6 @@ function_to_compute_model_computation_onesimulation_modelchoice <- function(onev
 
   # Combine p-val tables
   allpval_res <- dplyr::bind_rows(ls_res, .id = "model")
-  # allpval_res <- cbind(allpval_res, onevariation$variation)
   # Add the information about the truth, i.e. which markers have DE by design
   allpval_res <- dplyr::mutate(allpval_res,
                                truth = ifelse(.data$marker_id %in% as.character(vec_names_DEmarkers), 1, 0))

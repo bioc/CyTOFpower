@@ -94,9 +94,6 @@ function_to_transform_data <- function(data, cofactor = 5) {
 #'
 #' @return vector of marker names.
 function_extract_marker_names <- function(mock_dataset){
-  # # Get the index
-  # idx <- grep("Marker", colnames(mock_dataset))
-  # return(colnames(mock_dataset)[idx])
   setdiff(colnames(mock_dataset), c("group_id", "donor_id", "sample_id"))
 }
 
@@ -109,8 +106,6 @@ function_extract_marker_names <- function(mock_dataset){
 #'
 #' @return vactor of marker names.
 function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
-  # Number
-  #nb <- seq(from = (total_nb_marker - nb_DE_marker)+1, to = total_nb_marker)
   # Name
   paste("Marker", seq_len(nb_DE_marker), sep = "")
 }
@@ -248,20 +243,6 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
                        values_from = .data$transformed_values)
   mock_dataset_expdesign$rn <- NULL
   # Which markers are DE?
-  # ls_isDE <- lapply(variation, function(onemarker){
-  #   # DE marker if rho != 1
-  #   if (onemarker$rho != 1) {
-  #     DEmarker <-  TRUE
-  #   } else {
-  #     DEmarker <- FALSE
-  #   }
-  #   # Return
-  #   return(data.frame("marker_name" = onemarker$marker_name,
-  #                     "isDEmarker" = DEmarker))
-  # })
-  # df_isDE <- bind_rows(ls_isDE)
-  # ## Select DE markers
-  # df_onlyDE <- dplyr::filter(df_isDE, isDEmarker == TRUE)
   df_var <- dplyr::bind_rows(variation)
   df_onlyDE <- dplyr::filter(df_var, .data$rho != 1)
   DEmarkers_names <- as.vector(df_onlyDE$marker_name)
