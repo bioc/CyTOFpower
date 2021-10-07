@@ -82,7 +82,8 @@ test_that("Run the CytoGLMM - GLMM model", {
   # Set seed
   set.seed(123)
   # Run model
-  expect_warning(cytoglmm_res <- function_run_cytoGLMM(ls_3markers$ls_mock_data))
+  expect_warning(cytoglmm_res <- function_run_cytoGLMM(
+    mock_dataset = ls_3markers$ls_mock_data))
   # Test output
   # Is it a list?
   expect_type(cytoglmm_res, "list")
@@ -286,5 +287,57 @@ test_that("Contrast for LMM model", {
 })
 
 # test function_run_diffcytDSLMM() ---------------------------------------------------------------------------
+
+# Test
+test_that("Run diffcyt-DS-LMM model", {
+  # Set seed
+  set.seed(123)
+  # Generate formula/contrast
+  ls_contrast_LMM <- function_formula_contrast_diffcytDSLMM_randomeffect(
+    df_experiment_info = df_exp_info)
+  # Compute the features
+  ls_features <- function_compute_diffcyt_features(d_sumexp)
+  # Run the model
+  ls_res_model_lmm <- function_run_diffcytDSLMM(ls_form_contrast = ls_contrast_LMM,
+                                                df_experiment_info = df_exp_info,
+                                                ls_features = ls_features)
+
+  # Test the output
+  # Is it a list?
+  expect_type(ls_res_model_lmm, "list")
+  # Does it have the right structure?
+  expect_identical(names(ls_res_model_lmm),
+                   c("model_fit", "result_summary"))
+  # Are the p-values equal to the expected ones?
+  expect_equal(ls_res_model_lmm$result_summary$p_adj,
+               c( 0.123, 0, 0.544),
+               tolerance = 1e-3)
+})
+
 # test function_run_diffcyt_full_pipeline() ---------------------------------------------------------------------------
 
+# Test
+test_that("Run the full diffcyt pipeline", {
+  # Set seed
+  set.seed(123)
+  # In this test we check that the switch between the different models is
+  # done correctly
+
+  # diffcyt-DS-limma random
+  # Check message
+  expect_message(function_run_diffcyt_full_pipeline(onevariation = ls_3markers,
+                                                    model = c("limma"),
+                                                    effect = c("random")),
+                 regexp = "Run the limma model with random effect")
+  # diffcyt-DS-limma fixed
+  # Check message
+  expect_message(function_run_diffcyt_full_pipeline(onevariation = ls_3markers,
+                                                    model = c("limma"),
+                                                    effect = c("fixed")),
+                 regexp = "Run the limma model with fixed effect")
+  # diffcyt-DS-LMM
+  # Check message
+  expect_message(function_run_diffcyt_full_pipeline(onevariation = ls_3markers,
+                                                    model = c("LMM")),
+                 regexp = "Run the LMM model with random effect")
+})
