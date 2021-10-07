@@ -216,7 +216,7 @@ test_that("Contrast for limma model with fixed effect", {
 test_that("Run diffcyt-DS-limma model", {
   # Set seed
   set.seed(123)
-  # Run model
+  # Run the model
   # Compute the features
   ls_features <- function_compute_diffcyt_features(d_sumexp)
 
@@ -241,7 +241,7 @@ test_that("Run diffcyt-DS-limma model", {
   # With random effect
   # Compute the contrast
   ls_desigmat_contrast_r <- function_desigmat_contrast_diffcytDSlimma_fixedeffect(df_exp_info)
-  # Run model
+  # Run the model
   ls_res_model_r <- function_run_diffcytDSlimma(ls_desigmat_contrast_r,
                                                 df_experiment_info,
                                                 ls_features)
@@ -263,7 +263,7 @@ test_that("Run diffcyt-DS-limma model", {
 test_that("Contrast for LMM model", {
   # Set seed
   set.seed(123)
-  # Contrast
+  # Generate formula and contrast
   ls_contrast_LMM <- function_formula_contrast_diffcytDSLMM_randomeffect(df_exp_info)
   # Test output
   # Is it a list?
@@ -271,6 +271,18 @@ test_that("Contrast for LMM model", {
   # Does it have the right structure?
   expect_identical(names(ls_contrast_LMM),
                    c("formula", "contrast"))
+  # Check the formula
+  expect_equal(ls_contrast_LMM$formula$formula,
+               formula("y ~ group_id + (1 | donor_id)"),
+               ignore_formula_env	= TRUE)
+  # Is the random_terms equal TRUE?
+  expect_true(ls_contrast_LMM$formula$random_terms)
+  # Are the data equal to the experimental information?
+  expect_identical(ls_contrast_LMM$formula$data,
+                   df_exp_info[, c("group_id", "donor_id")])
+  # Check contrast
+  expect_identical(ls_contrast_LMM$contrast,
+                   matrix(c(0, 1), ncol = 1))
 })
 
 # test function_run_diffcytDSLMM() ---------------------------------------------------------------------------
