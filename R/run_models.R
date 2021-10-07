@@ -151,7 +151,7 @@ function_run_diffcytDSlimma <- function(ls_desigmat_contrast,
                                         ls_features){
   # Run the model depending on the effects (random or fixed)
   if(ls_desigmat_contrast$effect == "random"){
-    message("Running diffcyt-DS-limma model with random effect")
+    #message("Running diffcyt-DS-limma model with random effect")
     res_mock_flowset <- diffcyt::testDS_limma(
       d_counts = ls_features$counts,
       d_medians = ls_features$medians,
@@ -159,7 +159,7 @@ function_run_diffcytDSlimma <- function(ls_desigmat_contrast,
       contrast = ls_desigmat_contrast$contrast,
       block_id = df_experiment_info$donor_id)
   } else if(ls_desigmat_contrast$effect == "fixed"){
-    message("Running diffcyt-DS-limma model with fixed effect")
+    #message("Running diffcyt-DS-limma model with fixed effect")
     res_mock_flowset <- diffcyt::testDS_limma(
       d_counts = ls_features$counts,
       d_medians = ls_features$medians,
@@ -275,7 +275,7 @@ function_run_diffcyt_full_pipeline <- function(onevariation,
   ls_features <- function_compute_diffcyt_features(d_flowset)
   # Create design matrix or formula and constrast depending on choosen model
   if(model == "LMM"){
-    message("Run the LMM model, with random effect")
+    message("Run the LMM model with random effect")
     # Create formula and contrast
     ls_form <- function_formula_contrast_diffcytDSLMM_randomeffect(df_experiment_info)
     # Run the model
