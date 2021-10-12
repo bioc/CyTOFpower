@@ -310,7 +310,7 @@ test_that("Run diffcyt-DS-LMM model", {
                    c("model_fit", "result_summary"))
   # Are the p-values equal to the expected ones?
   expect_equal(ls_res_model_lmm$result_summary$p_adj,
-               c( 0.123, 0, 0.544),
+               c(0.123, 0, 0.544),
                tolerance = 1e-3)
 })
 
