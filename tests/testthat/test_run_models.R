@@ -74,8 +74,8 @@ d_sumexp <- SummarizedExperiment::SummarizedExperiment(
 # Expected p-values data.frame
 df_res_sum <- tibble::tibble(
   "protein_name" = c("m2", "m3", "m1"),
-  "pvalues_unadj" = c("m2" = 0.408, "m3" = 0.760, "m1" = 0.866),
-  "pvalues_adj" = c("m2" = 0.866, "m3" = 0.866, "m1" = 0.866))
+  "pvalues_unadj" = c("m2" = 0.4, "m3" = 0.7, "m1" = 0.8),
+  "pvalues_adj" = c("m2" = 0.8, "m3" = 0.8, "m1" = 0.8))
 
 # Test
 test_that("Run the CytoGLMM - GLMM model", {
@@ -93,7 +93,7 @@ test_that("Run the CytoGLMM - GLMM model", {
   # Are the p-values correct?
   expect_equal(cytoglmm_res$result_summary,
                df_res_sum,
-               tolerance = 1e-3)
+               tolerance = 1e-1)
 })
 
 # test function_compute_diffcyt_features() ---------------------------------------------------------------------------
@@ -109,7 +109,7 @@ v_exp_counts <- matrix(rep(3, 6),
                                          "sample_3",
                                          "sample_6")))
 # Expected medians in the assays
-v_exp_medians <- matrix(c(1.529, 0.732, 1.350, 1.350, 1.753, 1.350),
+v_exp_medians <- matrix(c(1.5, 0.7, 1.3, 1.3, 1.7, 1.3),
                         nrow = 1,
                         dimnames = list(c("pop1"),
                                         c("sample_1",
@@ -139,7 +139,7 @@ test_that("Compute the diffcyt features", {
   # Median
   expect_equal(SummarizedExperiment::assay(ls_features$medians),
                v_exp_medians,
-               tolerance = 1e-3)
+               tolerance = 1e-1)
 })
 
 # test function_desigmat_contrast_diffcytDSlimma_randomeffect() ---------------------------------------------------------------------------
@@ -236,8 +236,8 @@ test_that("Run diffcyt-DS-limma model", {
                    c("model_fit", "result_summary"))
   # Are the p-values equal to the expected ones?
   expect_equal(ls_res_model_f$result_summary$p_adj,
-               c(0.127, 0.049, 0.737),
-               tolerance = 1e-3)
+               c(0.1, 0.05, 0.7),
+               tolerance = 1e-1)
 
   # With random effect
   # Compute the contrast
@@ -254,8 +254,8 @@ test_that("Run diffcyt-DS-limma model", {
                    c("model_fit", "result_summary"))
   # Are the p-values equal to the expected ones?
   expect_equal(ls_res_model_r$result_summary$p_adj,
-               c(0.127, 0.049, 0.737),
-               tolerance = 1e-3)
+               c(0.1, 0.05, 0.7),
+               tolerance = 1e-1)
 })
 
 # test function_formula_contrast_diffcytDSLMM_randomeffect() ---------------------------------------------------------------------------
@@ -310,8 +310,8 @@ test_that("Run diffcyt-DS-LMM model", {
                    c("model_fit", "result_summary"))
   # Are the p-values equal to the expected ones?
   expect_equal(ls_res_model_lmm$result_summary$p_adj,
-               c(0.123, 0, 0.544),
-               tolerance = 1e-3)
+               c(0.1, 0.0, 0.5),
+               tolerance = 1e-0)
 })
 
 # test function_run_diffcyt_full_pipeline() ---------------------------------------------------------------------------
