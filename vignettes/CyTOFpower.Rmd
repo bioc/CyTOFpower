@@ -66,7 +66,7 @@ with $\mu_{0} = k  \cdot \theta > 0$;
 - subject effect $S$: $S = \sqrt{k  \cdot \theta^{2}}$.
 
 The cell value mean of the differentially expressed marker(s) is then multiplied 
-by thefold change defined earlier: $\mu_{1,ij}= \mu_{0,ij} \cdot \rho_j$.
+by the fold change defined earlier: $\mu_{1,ij}= \mu_{0,ij} \cdot \rho_j$.
 
 
 The cell values are drawn using a Negative Binomial:
@@ -77,7 +77,7 @@ The cell values are drawn using a Negative Binomial:
 Some of these parameters might need to be estimated using previous data or publicly
 available datasets. For instance, the dispersion and mean parameters of the 
 negative binomial distribution might be estimated using `fitdistr` from the 
-`MASS` package for each markers.
+`MASS` package for each marker.
 
 ## Power computation
 
