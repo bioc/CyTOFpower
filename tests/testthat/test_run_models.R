@@ -1,6 +1,6 @@
 # Test function to run the models
 
-# Create list of parameters combination for 2 markers
+# Create list of parameters combination for 3 markers
 variation <- list(data.frame("marker_name" = "m1",
                              "nb_donor" = 3,
                              "rho" = 1,
