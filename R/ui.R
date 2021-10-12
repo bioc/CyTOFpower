@@ -70,7 +70,6 @@ appUI <- fluidPage(
                         ),
                         # Main panel
                         mainPanel(
-                          # textOutput("na_error"),
                           conditionalPanel("input.p_nb_donors == 'NA'",
                                            plotOutput("p_plot_pwr_nbdonors")
                           ),
@@ -97,7 +96,6 @@ appUI <- fluidPage(
                                            input.p_dispersion != 'NA'",
                                            textOutput(outputId = "p_power")
                           ))
-                        # textOutput(outputId = "p_power"))
                       )
              ),
              # Personalized datasets
@@ -181,7 +179,6 @@ appUI <- fluidPage(
                                                h4(textOutput(outputId = "title_var")),
                                                DT::dataTableOutput(outputId = "tab_obs_variance"),
                                                ## Results
-                                               # plotOutput(outputId = "plot_pval_dist"),
                                                DT::dataTableOutput(outputId = "results_models"))
                           )
                         )
