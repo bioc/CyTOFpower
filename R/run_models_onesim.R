@@ -36,7 +36,6 @@ function_apply_modelcomputations_modelchoice <- function(list_combined_output,
 function_to_compute_model_computation_onesimulation_modelchoice <- function(onevariation,
                                                                             model){
   # Split info from the mock datasets
-  # df_exp_info <- onevariation$df_info
   onemockdataset <- onevariation$ls_mock_data
 
   # Names DE markers

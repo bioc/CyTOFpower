@@ -13,7 +13,6 @@ function_summary_results_models <- function(summary_from_model, package){
 
   # Get package argument
   package <- match.arg(package, choices = c("CytoGLMM", "diffcyt"))
-  message("Using package: ", package)
 
   # Rename colnames
   # if the cytoGLMM package has been used, the column name in the results table

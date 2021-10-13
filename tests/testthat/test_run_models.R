@@ -1,6 +1,6 @@
 # Test function to run the models
 
-# Create list of parameters combination for 2 markers
+# Create list of parameters combination for 3 markers
 variation <- list(data.frame("marker_name" = "m1",
                              "nb_donor" = 3,
                              "rho" = 1,
@@ -74,15 +74,16 @@ d_sumexp <- SummarizedExperiment::SummarizedExperiment(
 # Expected p-values data.frame
 df_res_sum <- tibble::tibble(
   "protein_name" = c("m2", "m3", "m1"),
-  "pvalues_unadj" = c("m2" = 0.408, "m3" = 0.760, "m1" = 0.866),
-  "pvalues_adj" = c("m2" = 0.866, "m3" = 0.866, "m1" = 0.866))
+  "pvalues_unadj" = c("m2" = 0.4, "m3" = 0.7, "m1" = 0.8),
+  "pvalues_adj" = c("m2" = 0.8, "m3" = 0.8, "m1" = 0.8))
 
 # Test
 test_that("Run the CytoGLMM - GLMM model", {
   # Set seed
   set.seed(123)
   # Run model
-  expect_warning(cytoglmm_res <- function_run_cytoGLMM(ls_3markers$ls_mock_data))
+  expect_warning(cytoglmm_res <- function_run_cytoGLMM(
+    mock_dataset = ls_3markers$ls_mock_data))
   # Test output
   # Is it a list?
   expect_type(cytoglmm_res, "list")
@@ -92,7 +93,7 @@ test_that("Run the CytoGLMM - GLMM model", {
   # Are the p-values correct?
   expect_equal(cytoglmm_res$result_summary,
                df_res_sum,
-               tolerance = 1e-3)
+               tolerance = 1e-1)
 })
 
 # test function_compute_diffcyt_features() ---------------------------------------------------------------------------
@@ -108,7 +109,7 @@ v_exp_counts <- matrix(rep(3, 6),
                                          "sample_3",
                                          "sample_6")))
 # Expected medians in the assays
-v_exp_medians <- matrix(c(1.529, 0.732, 1.350, 1.350, 1.753, 1.350),
+v_exp_medians <- matrix(c(1.5, 0.7, 1.3, 1.3, 1.7, 1.3),
                         nrow = 1,
                         dimnames = list(c("pop1"),
                                         c("sample_1",
@@ -138,7 +139,7 @@ test_that("Compute the diffcyt features", {
   # Median
   expect_equal(SummarizedExperiment::assay(ls_features$medians),
                v_exp_medians,
-               tolerance = 1e-3)
+               tolerance = 1e-1)
 })
 
 # test function_desigmat_contrast_diffcytDSlimma_randomeffect() ---------------------------------------------------------------------------
@@ -216,7 +217,7 @@ test_that("Contrast for limma model with fixed effect", {
 test_that("Run diffcyt-DS-limma model", {
   # Set seed
   set.seed(123)
-  # Run model
+  # Run the model
   # Compute the features
   ls_features <- function_compute_diffcyt_features(d_sumexp)
 
@@ -235,13 +236,13 @@ test_that("Run diffcyt-DS-limma model", {
                    c("model_fit", "result_summary"))
   # Are the p-values equal to the expected ones?
   expect_equal(ls_res_model_f$result_summary$p_adj,
-               c(0.127, 0.049, 0.737),
-               tolerance = 1e-3)
+               c(0.1, 0.05, 0.7),
+               tolerance = 1e-1)
 
   # With random effect
   # Compute the contrast
   ls_desigmat_contrast_r <- function_desigmat_contrast_diffcytDSlimma_fixedeffect(df_exp_info)
-  # Run model
+  # Run the model
   ls_res_model_r <- function_run_diffcytDSlimma(ls_desigmat_contrast_r,
                                                 df_experiment_info,
                                                 ls_features)
@@ -253,8 +254,8 @@ test_that("Run diffcyt-DS-limma model", {
                    c("model_fit", "result_summary"))
   # Are the p-values equal to the expected ones?
   expect_equal(ls_res_model_r$result_summary$p_adj,
-               c(0.127, 0.049, 0.737),
-               tolerance = 1e-3)
+               c(0.1, 0.05, 0.7),
+               tolerance = 1e-1)
 })
 
 # test function_formula_contrast_diffcytDSLMM_randomeffect() ---------------------------------------------------------------------------
@@ -263,7 +264,7 @@ test_that("Run diffcyt-DS-limma model", {
 test_that("Contrast for LMM model", {
   # Set seed
   set.seed(123)
-  # Contrast
+  # Generate formula and contrast
   ls_contrast_LMM <- function_formula_contrast_diffcytDSLMM_randomeffect(df_exp_info)
   # Test output
   # Is it a list?
@@ -271,8 +272,72 @@ test_that("Contrast for LMM model", {
   # Does it have the right structure?
   expect_identical(names(ls_contrast_LMM),
                    c("formula", "contrast"))
+  # Check the formula
+  expect_equal(ls_contrast_LMM$formula$formula,
+               formula("y ~ group_id + (1 | donor_id)"),
+               ignore_formula_env	= TRUE)
+  # Is the random_terms equal TRUE?
+  expect_true(ls_contrast_LMM$formula$random_terms)
+  # Are the data equal to the experimental information?
+  expect_identical(ls_contrast_LMM$formula$data,
+                   df_exp_info[, c("group_id", "donor_id")])
+  # Check contrast
+  expect_identical(ls_contrast_LMM$contrast,
+                   matrix(c(0, 1), ncol = 1))
 })
 
 # test function_run_diffcytDSLMM() ---------------------------------------------------------------------------
+
+# Test
+test_that("Run diffcyt-DS-LMM model", {
+  # Set seed
+  set.seed(123)
+  # Generate formula/contrast
+  ls_contrast_LMM <- function_formula_contrast_diffcytDSLMM_randomeffect(
+    df_experiment_info = df_exp_info)
+  # Compute the features
+  ls_features <- function_compute_diffcyt_features(d_sumexp)
+  # Run the model
+  ls_res_model_lmm <- function_run_diffcytDSLMM(ls_form_contrast = ls_contrast_LMM,
+                                                df_experiment_info = df_exp_info,
+                                                ls_features = ls_features)
+
+  # Test the output
+  # Is it a list?
+  expect_type(ls_res_model_lmm, "list")
+  # Does it have the right structure?
+  expect_identical(names(ls_res_model_lmm),
+                   c("model_fit", "result_summary"))
+  # Are the p-values equal to the expected ones?
+  expect_equal(ls_res_model_lmm$result_summary$p_adj,
+               c(0.1, 0.0, 0.5),
+               tolerance = 1e-0)
+})
+
 # test function_run_diffcyt_full_pipeline() ---------------------------------------------------------------------------
 
+# Test
+test_that("Run the full diffcyt pipeline", {
+  # Set seed
+  set.seed(123)
+  # In this test we check that the switch between the different models is
+  # done correctly
+
+  # diffcyt-DS-limma random
+  # Check message
+  expect_message(function_run_diffcyt_full_pipeline(onevariation = ls_3markers,
+                                                    model = c("limma"),
+                                                    effect = c("random")),
+                 regexp = "Run the limma model with random effect")
+  # diffcyt-DS-limma fixed
+  # Check message
+  expect_message(function_run_diffcyt_full_pipeline(onevariation = ls_3markers,
+                                                    model = c("limma"),
+                                                    effect = c("fixed")),
+                 regexp = "Run the limma model with fixed effect")
+  # diffcyt-DS-LMM
+  # Check message
+  expect_message(function_run_diffcyt_full_pipeline(onevariation = ls_3markers,
+                                                    model = c("LMM")),
+                 regexp = "Run the LMM model with random effect")
+})

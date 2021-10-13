@@ -258,7 +258,6 @@ appServer <- function(input, output, session){
                        "subject_effect" = input$subeff,
                        "nb_donor" = input$nb_donors,
                        "nb_cell_per_sample" = input$nb_cells,
-                       # "rho" = as.numeric(df_rho()[i]))
                        "rho" = as.numeric(df_param[i, "rho"]))
                    })
                    # Pipeline
@@ -266,16 +265,19 @@ appServer <- function(input, output, session){
                      # (1) generate a single dataset
                      sim_data <- function_apply_onesimulation_withmarkerinfo(ls_variation)
                      # (2) apply methods
-                     res_mod <- function_apply_modelcomputations_modelchoice(list_combined_output = sim_data,
-                                                                             model = input$modelcheckGroup)
+                     res_mod <- function_apply_modelcomputations_modelchoice(
+                       list_combined_output = sim_data,
+                       model = input$modelcheckGroup)
                      # (3) store results and discard data
                      # Observed variance/effect size
                      # Merge counts data
                      raw_data <- cbind(sim_data$ls_mock_raw_data, "i" = sim_id)
                      # Long format
                      raw_data_lg <- tidyr::pivot_longer(raw_data,
-                                                        # cols = starts_with("Marker"),
-                                                        cols = -c("i", "group_id", "donor_id", "sample_id"),
+                                                        cols = -c("i",
+                                                                  "group_id",
+                                                                  "donor_id",
+                                                                  "sample_id"),
                                                         names_to = "markers",
                                                         values_to = "raw_intensity")
                      # Variance and effect size
@@ -324,9 +326,11 @@ appServer <- function(input, output, session){
 
                  # Output
                  output$title_var <- renderText(paste("Observed sample variance (mean across simulations)"))
-                 output$tab_obs_variance <- DT::renderDataTable({df_obs_variance}, options = list(pageLength = 5))
+                 output$tab_obs_variance <- DT::renderDataTable({df_obs_variance},
+                                                                options = list(pageLength = 5))
                  output$title_effsize <- renderText(paste("Observed Cohen's effect size"))
-                 output$tab_obs_effectsize <- DT::renderDataTable({df_obs_effectsize}, options = list(pageLength = 5))
+                 output$tab_obs_effectsize <- DT::renderDataTable({df_obs_effectsize},
+                                                                  options = list(pageLength = 5))
                  output$results_models <- DT::renderDataTable({df_res_models})
 
                  # Compute power
@@ -335,17 +339,22 @@ appServer <- function(input, output, session){
                  })
                  colnames(pwr_values) <- c("model", "markers", "power")
                  output$title_power <- renderText(paste("Power"))
-                 output$results_pwr_values <- DT::renderDataTable({pwr_values[,c("model", "markers", "power")]})
+                 output$results_pwr_values <- DT::renderDataTable({
+                   pwr_values[,c("model", "markers", "power")]})
 
                  # Effect size - power
                  ## Combine
-                 pwr_eff <- dplyr::left_join(pwr_values, df_obs_effectsize, by = "markers")
+                 pwr_eff <- dplyr::left_join(pwr_values, df_obs_effectsize,
+                                             by = "markers")
                  ## Plot
                  if(length(input$modelcheckGroup) > 1){
                    output$plot_pwr_eff <- renderPlot({
-                     ggplot2::ggplot(pwr_eff, ggplot2::aes_string(x = "effect_size", y = "power", col = "model")) +
+                     ggplot2::ggplot(pwr_eff, ggplot2::aes_string(x = "effect_size",
+                                                                  y = "power",
+                                                                  col = "model")) +
                        ggplot2::geom_point(size = 2,
-                                           position = ggplot2::position_jitter(width = 0.01, height = 0.01)) + #position = "jitter" position = position_jitter()
+                                           position = ggplot2::position_jitter(width = 0.01,
+                                                                               height = 0.01)) +
                        ggplot2::ylim(0, 1.3) +
                        ggplot2::labs(title="Plot of power by effect size",
                                      x ="Cohen effect size", y = "Power") +
@@ -353,8 +362,10 @@ appServer <- function(input, output, session){
                    })
                  } else{
                    output$plot_pwr_eff <- renderPlot({
-                     ggplot2::ggplot(pwr_eff, ggplot2::aes_string(x = "effect_size", y = "power", col = "model")) +
-                       ggplot2::geom_point(size = 2) + #position = "jitter" position = position_jitter()
+                     ggplot2::ggplot(pwr_eff, ggplot2::aes_string(x = "effect_size",
+                                                                  y = "power",
+                                                                  col = "model")) +
+                       ggplot2::geom_point(size = 2) +
                        ggplot2::ylim(0, 1) +
                        ggplot2::labs(title="Plot of power by effect size",
                                      x ="Cohen effect size", y = "Power") +
@@ -364,7 +375,9 @@ appServer <- function(input, output, session){
 
                  # Wide format
                  pwr_eff_w <- tidyr::pivot_wider(data = pwr_eff,
-                                                 id_cols = c("markers", "effect_size", "observed_FC"),
+                                                 id_cols = c("markers",
+                                                             "effect_size",
+                                                             "observed_FC"),
                                                  names_from = "model",
                                                  values_from = "power")
                  ## Add non-DE marker
@@ -373,13 +386,7 @@ appServer <- function(input, output, session){
                  nonDE_obs_effectsize[,col_to_add] <- NA
                  pwr_eff_w_nonDE <- rbind(pwr_eff_w, nonDE_obs_effectsize)
                  output$results_pwr_with_effsize <- DT::renderDataTable(
-                   # DT::datatable({pwr_eff_w_nonDE},
                    pwr_eff_w_nonDE,
-                   # class = 'cell-border stripe',
-                   # extensions = 'Buttons',
-                   # options = list(autoWidth = TRUE,
-                   #                dom = 'Bfrtip',
-                   #                buttons = c("cvs"))),
                    server = FALSE)
                }
   )
