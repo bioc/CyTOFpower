@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction
+# Introduction
 
 Mass Spectrometry (or CyTOF) is a single cell technology. It measures up to 
 50 protein markers on a single cell. The markers are antibodies labeled with 
@@ -36,7 +36,7 @@ analyses: CytoGLMM [@seiler2020cytoglmm] and diffcyt [@weber2019diffcyt].
 These models are available in this package and their results, the adjusted p-value
 per marker, are used to compute the power an experiment.
 
-## Simulate in-silico data
+# Simulate in-silico data
 
 In-silico CyTOF data are simulated using the following data generation process. 
 We assumed two conditions for which one condition is the baseline (i.e. a 
@@ -79,7 +79,7 @@ available datasets. For instance, the dispersion and mean parameters of the
 negative binomial distribution might be estimated using `fitdistr` from the 
 `MASS` package for each marker.
 
-## Power computation
+# Power computation
 
 The power is computed for the differentially expressed marker(s) (i.e. fold change
 different from 1). It is based on the adjusted p-values reported by the models:
@@ -87,7 +87,7 @@ counting how many times the null hypothesis is correctly rejected.
 It is also important to note that the power returned by these computations uses
 the threshold of $\alpha = 0.05$ as a significance level.
 
-## Shiny app
+# Shiny app
 
 The shiny app is divided into two tabs: (1) the precomputed dataset tab: the
 power was pre-computed for multiple combinations of parameters and the user is
@@ -95,7 +95,7 @@ able to search this grid of parameters; (2) the personalized dataset tab: the
 data and the power is computed on request based on the parameters chosen by
 the user.
 
-### Precomputed dataset 
+## Precomputed dataset 
 
 This panel allows the user to search a grid of parameters that have been 
 pre-computed. 
@@ -113,7 +113,7 @@ The available parameters that the user can choose from are the following:
 - Models to run: CytoGLMM - GLMM; diffcyt - limma with fixed effect; 
 diffcyt - limma with random effect; diffcyt - lme4.
 
-### Personalized dataset
+## Personalized dataset
 
 This panel allows the user to compute the power for a chosen set of parameters. 
 The data are generated on request and it takes some time to get the results,
@@ -132,7 +132,7 @@ specified in the matrix;
 diffcyt - limma with random effect; diffcyt - lme4;
 - The number of simulations: we recommend at least 10 simulations.
 
-### Run the app
+## Run the app
 
 The shiny app is run locally by calling the following function:
 
