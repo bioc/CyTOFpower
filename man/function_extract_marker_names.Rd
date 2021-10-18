@@ -18,3 +18,4 @@ Extract marker names.
 \details{
 Function to extract the marker names.
 }
+\keyword{internal}

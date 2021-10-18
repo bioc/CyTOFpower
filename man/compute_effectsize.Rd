@@ -7,15 +7,16 @@
 compute_effectsize(raw_data_lg)
 }
 \arguments{
-\item{raw_data_lg}{data.frame, cells values in long format}
+\item{raw_data_lg}{data.frame, cells values in long format.}
 }
 \value{
 data.frame, Cohen's effect size and fold change that were observed
-in the data for each marker
+in the data for each marker.
 }
 \description{
 Compute effect size
 }
 \details{
-Compute observed Cohen's effect size and observed fold change
+Compute observed Cohen's effect size and observed fold change.
 }
+\keyword{internal}

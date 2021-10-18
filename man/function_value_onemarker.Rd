@@ -42,3 +42,4 @@ Compute simulated cell values for one marker with markers NB informations
 Function to generate value for one marker with a mean and dispersion
 specified for the negative binomiale.
 }
+\keyword{internal}

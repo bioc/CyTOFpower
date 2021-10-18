@@ -23,3 +23,4 @@ Design and contrast matrices for diffcyt-DS-limma with fixed effect.
 Function to create the design matrix and contrast for the diffcyt-DS-limma model
 with fixed effect.
 }
+\keyword{internal}

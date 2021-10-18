@@ -18,3 +18,4 @@ Number of DE markers greater than 1.
 \details{
 Function to check that the number of DE markers is greater than 1.
 }
+\keyword{internal}

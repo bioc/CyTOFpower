@@ -18,3 +18,4 @@ Number of markers greater than 2.
 \details{
 Function to check that the number of markers is greater than 2.
 }
+\keyword{internal}

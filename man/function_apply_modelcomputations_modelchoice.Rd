@@ -25,3 +25,4 @@ Run DS tests for one simulation.
 \details{
 Wrapper to run the models through the different simulations.
 }
+\keyword{internal}

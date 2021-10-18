@@ -22,3 +22,4 @@ Run cytoglmm
 \details{
 Function to run GLMM model from CytoGLMM package.
 }
+\keyword{internal}

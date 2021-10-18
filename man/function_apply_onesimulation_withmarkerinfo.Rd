@@ -26,3 +26,4 @@ Apply one simulation for a given parameter combination
 number times (iterations), when we have prior information about the markers
 distribution parameters (mean and dispersion of the negative binomial).
 }
+\keyword{internal}

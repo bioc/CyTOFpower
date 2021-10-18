@@ -25,3 +25,4 @@ Run cytoglm.
 Function to run the Generalized Linear Model with Bootstrap,
 from the CytoGLMM package.
 }
+\keyword{internal}

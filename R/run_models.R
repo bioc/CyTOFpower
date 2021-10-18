@@ -10,6 +10,8 @@
 #'     - plot: plot of the effects;
 #'     - results_summary: data.frame containing the results of the models for
 #'     each marker.
+#'
+#' @keywords internal
 function_run_cytoGLMM <- function(mock_dataset){
   # Get marker names
   markers_names <- function_extract_marker_names(mock_dataset)
@@ -41,6 +43,8 @@ function_run_cytoGLMM <- function(mock_dataset){
 #'     - plot: plot of the effects;
 #'     - results_summary: data.frame containing the results of the models for
 #'     each marker.
+#'
+#' @keywords internal
 function_run_bootstrapcytoGLMM <- function(mock_dataset, nb_bootstrap = 500){
   # Get marker names
   markers_names <- function_extract_marker_names(mock_dataset)
@@ -72,6 +76,8 @@ function_run_bootstrapcytoGLMM <- function(mock_dataset, nb_bootstrap = 500){
 #' @param mock_flowset data.frame, cell values for each marker.
 #'
 #' @return list with cell counts and medians for each markers.
+#'
+#' @keywords internal
 function_compute_diffcyt_features <- function(mock_flowset){
   # Calculate features
   # Cluster cell counts
@@ -95,6 +101,8 @@ function_compute_diffcyt_features <- function(mock_flowset){
 #'     - design_matrix: the design matrix;
 #'     - contrast: the contrast matrix;
 #'     - effect: the specification of the "random" effect.
+#'
+#' @keywords internal
 function_desigmat_contrast_diffcytDSlimma_randomeffect <- function(df_experiment_info){
   # Create design matrix
   designmatrix <- diffcyt::createDesignMatrix(df_experiment_info,
@@ -120,6 +128,7 @@ function_desigmat_contrast_diffcytDSlimma_randomeffect <- function(df_experiment
 #'     - design_matrix: the design matrix;
 #'     - contrast: the contrast matrix;
 #'     - effect: the specification of the "fixed" effect.
+#' @keywords internal
 function_desigmat_contrast_diffcytDSlimma_fixedeffect <- function(df_experiment_info){
   # Create design matrix
   designmatrix <- diffcyt::createDesignMatrix(df_experiment_info,
@@ -146,6 +155,8 @@ function_desigmat_contrast_diffcytDSlimma_fixedeffect <- function(df_experiment_
 #' @return list with 2 slots:
 #'     - model_fit: the model fit;
 #'     - result_summary: results of the model for each marker.
+#'
+#' @keywords internal
 function_run_diffcytDSlimma <- function(ls_desigmat_contrast,
                                         df_experiment_info,
                                         ls_features){
@@ -183,6 +194,8 @@ function_run_diffcytDSlimma <- function(ls_desigmat_contrast,
 #' @return list with 3 slots:
 #'     - formula: the formula for the model;
 #'     - contrast: the contrast matrix.
+#'
+#' @keywords internal
 function_formula_contrast_diffcytDSLMM_randomeffect <- function(df_experiment_info){
   # Create formula
   formula_withrandomeffect <-
@@ -208,6 +221,8 @@ function_formula_contrast_diffcytDSLMM_randomeffect <- function(df_experiment_in
 #' @return list with 2 slots:
 #'     - model_fit: the model fit;
 #'     - result_summary: results of the model for each marker.
+#'
+#' @keywords internal
 function_run_diffcytDSLMM <- function(ls_form_contrast, df_experiment_info, ls_features){
   # DS test within clusters with LMM
   res_mock_flowset <- diffcyt::testDS_LMM(
@@ -237,6 +252,8 @@ function_run_diffcytDSLMM <- function(ls_form_contrast, df_experiment_info, ls_f
 #' @return list with 2 slots:
 #'     - model_fit: the model fit;
 #'     - result_summary: results of the model for each marker.
+#'
+#' @keywords internal
 function_run_diffcyt_full_pipeline <- function(onevariation,
                                                model = c("limma", "LMM"),
                                                effect = c("random", "fixed")){

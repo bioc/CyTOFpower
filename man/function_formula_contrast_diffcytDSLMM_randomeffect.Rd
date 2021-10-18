@@ -21,3 +21,4 @@ Formula and contrast matrix for diffcyt-DS-LMM with random effect.
 \details{
 Function to create formula and contrast for diffcyt-DS-LMM with random effect.
 }
+\keyword{internal}

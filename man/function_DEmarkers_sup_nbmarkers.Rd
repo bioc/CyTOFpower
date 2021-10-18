@@ -22,3 +22,4 @@ Check on the number of DE markers.
 Function to check that number of DE markers greater than number of
 markers.
 }
+\keyword{internal}

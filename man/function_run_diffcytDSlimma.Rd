@@ -29,3 +29,4 @@ Run diffcyt-DS-limma model.
 \details{
 Function to run diffcyt-DS-limma model from the diffcyt package.
 }
+\keyword{internal}

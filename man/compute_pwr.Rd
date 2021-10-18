@@ -7,16 +7,17 @@
 compute_pwr(model_values, alpha = 0.05)
 }
 \arguments{
-\item{model_values}{data.frame, output of run_models()}
+\item{model_values}{data.frame, output of run_models().}
 
-\item{alpha}{numeric, significance level}
+\item{alpha}{numeric, significance level.}
 }
 \value{
-numeric, power
+numeric, power.
 }
 \description{
 Compute power
 }
 \details{
-Compute the power based on the model values
+Compute the power based on the model values.
 }
+\keyword{internal}

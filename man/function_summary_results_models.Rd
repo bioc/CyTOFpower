@@ -21,3 +21,4 @@ Summarize data and results.
 Function to do a summary of the tested data and model's results
   for the CytoGLMM and diffcyt packages.
 }
+\keyword{internal}

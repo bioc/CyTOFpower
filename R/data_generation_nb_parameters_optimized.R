@@ -10,6 +10,8 @@
 #' donor IDs).
 #'
 #' @return logical, TRUE is the data are paired - FALSE if the data are not paired
+#'
+#' @keywords internal
 function_is_data_paired <- function(data){
   # Number of samples
   nb_samples <- length(unique(data$sample_id))
@@ -38,6 +40,8 @@ function_is_data_paired <- function(data){
 #'
 #' @return error message if the number of DE markers is greater than the total
 #' number of markers.
+#'
+#' @keywords internal
 function_DEmarkers_sup_nbmarkers <- function(nb_markers, nb_DEmarker){
   if(nb_markers < nb_DEmarker){
     stop("Number of markers is not greater than number of differentially expressed makers")
@@ -51,6 +55,8 @@ function_DEmarkers_sup_nbmarkers <- function(nb_markers, nb_DEmarker){
 #' @param nb_marker numeric, total number of markers.
 #'
 #' @return error message if the total number of markers is lower than 3.
+#'
+#' @keywords internal
 function_check_nbmarkers <- function(nb_marker){
   if(nb_marker < 3){
     stop("Number of markers should be greater than 2")
@@ -64,6 +70,8 @@ function_check_nbmarkers <- function(nb_marker){
 #' @param nb_DEmarker numeric, number of differentially expressed markers.
 #'
 #' @return error message
+#'
+#' @keywords internal
 function_check_nbDEmarkers <- function(nb_DEmarker){
   if(nb_DEmarker < 1){
     stop("Number of markers should be greater than 0")
@@ -80,6 +88,8 @@ function_check_nbDEmarkers <- function(nb_DEmarker){
 #' cofactor = 5).
 #'
 #' @return data.frame of transformed data.
+#'
+#' @keywords internal
 function_to_transform_data <- function(data, cofactor = 5) {
   asinh(data/cofactor)
 }
@@ -93,6 +103,8 @@ function_to_transform_data <- function(data, cofactor = 5) {
 #' @param mock_dataset data.frame, containing the cell values for each marker.
 #'
 #' @return vector of marker names.
+#'
+#' @keywords internal
 function_extract_marker_names <- function(mock_dataset){
   setdiff(colnames(mock_dataset), c("group_id", "donor_id", "sample_id"))
 }
@@ -105,6 +117,8 @@ function_extract_marker_names <- function(mock_dataset){
 #' @param nb_DE_marker numeric, number of DE markers.
 #'
 #' @return vactor of marker names.
+#'
+#' @keywords internal
 function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
   # Name
   paste("Marker", seq_len(nb_DE_marker), sep = "")
@@ -129,6 +143,8 @@ function_names_DE_markers <- function(total_nb_marker, nb_DE_marker){
 #' nb_cell_per_sample = 500).
 #'
 #' @return data.frame of cell values.
+#'
+#' @keywords internal
 function_value_onemarker <- function(marker_name,
                                      mu0,
                                      dispersion,
@@ -212,6 +228,8 @@ function_value_onemarker <- function(marker_name,
 #'     - DEmarkers_names: vector of DE marker names;
 #'     - raw_data: data.frame of raw cell values;
 #'     - data: data.frame of transformed cell values.
+#'
+#' @keywords internal
 function_create_mock_dataset_withmarkerinfo <- function(variation){
   # Generate values for all markers
   ls_raw_mock_dataset_expdesign <- lapply(variation, function(onemarker) {
@@ -276,6 +294,8 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
 #'     - DE_markers_names: name of the differentially expressed markers;
 #'     - ls_mock_data: list of data.frames, each data.frame being one simulation of
 #'     the cell values using the input parameters provided (list is length nb_sim).
+#'
+#' @keywords internal
 function_apply_onesimulation_withmarkerinfo <- function(variation) {
 
   print(variation)

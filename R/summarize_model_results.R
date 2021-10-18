@@ -9,6 +9,8 @@
 #' @param package character, package used to run the test: "CytoGLMM" or "diffcyt".
 #'
 #' @return data.frame of results for each simulation.
+#'
+#' @keywords internal
 function_summary_results_models <- function(summary_from_model, package){
 
   # Get package argument

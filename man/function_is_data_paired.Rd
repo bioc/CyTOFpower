@@ -19,3 +19,4 @@ Data paired.
 \details{
 Function to check if the data is paired.
 }
+\keyword{internal}

@@ -23,3 +23,4 @@ Design and contrast matrices for diffcyt-DS-limma with random effect.
 Function to create the design matrix and contrast for the
 diffcyt-DS-limma model with random effect from the diffcyt package.
 }
+\keyword{internal}

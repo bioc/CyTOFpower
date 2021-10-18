@@ -22,3 +22,4 @@ arcsinh transformation.
 Function to transform the data with the recommended transformation
 for cyTOF data: arcsinh with cofactor equals to 5.
 }
+\keyword{internal}

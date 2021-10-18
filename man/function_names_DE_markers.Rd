@@ -20,3 +20,4 @@ Generate name of the DE markers.
 \details{
 Function to generate the name of the DE markers.
 }
+\keyword{internal}

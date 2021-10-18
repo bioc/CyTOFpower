@@ -30,3 +30,4 @@ Run diffcyt pipeline
 Function to run diffcyt pipeline. We do not used the diffcyt function
 directly because of the limma model run differently with the effects.
 }
+\keyword{internal}

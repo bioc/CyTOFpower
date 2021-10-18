@@ -1,11 +1,13 @@
 #' Compute power
 #'
-#' @details Compute the power based on the model values
+#' @details Compute the power based on the model values.
 #'
-#' @param model_values data.frame, output of run_models()
-#' @param alpha numeric, significance level
+#' @param model_values data.frame, output of run_models().
+#' @param alpha numeric, significance level.
 #'
-#' @return numeric, power
+#' @return numeric, power.
+#'
+#' @keywords internal
 compute_pwr <- function(model_values,
                         alpha = 0.05){
   model_values %>%
@@ -16,11 +18,13 @@ compute_pwr <- function(model_values,
 
 #' Compute variance
 #'
-#' @details Compute the observed variance in the data
+#' @details Compute the observed variance in the data.
 #'
-#' @param raw_data_lg data.frame, cells values in long format
+#' @param raw_data_lg data.frame, cells values in long format.
 #'
-#' @return numeric, observed variance mean
+#' @return numeric, observed variance mean.
+#'
+#' @keywords internal
 compute_variance <- function(raw_data_lg){
   # Sample variance
   obs_sample_variance <- raw_data_lg %>%
@@ -36,12 +40,14 @@ compute_variance <- function(raw_data_lg){
 
 #' Compute effect size
 #'
-#' @details Compute observed Cohen's effect size and observed fold change
+#' @details Compute observed Cohen's effect size and observed fold change.
 #'
-#' @param raw_data_lg data.frame, cells values in long format
+#' @param raw_data_lg data.frame, cells values in long format.
 #'
 #' @return data.frame, Cohen's effect size and fold change that were observed
-#' in the data for each marker
+#' in the data for each marker.
+#'
+#' @keywords internal
 compute_effectsize <- function(raw_data_lg){
   # Effect size
   ## Mean

@@ -25,3 +25,4 @@ Run diffcyt-DS-LMM model.
 \details{
 Function to run diffcyt-DS-LMM model from the diffcyt package.
 }
+\keyword{internal}

@@ -7,6 +7,8 @@
 #' @param model vector, name(s) of models to test.
 #'
 #' @return data.frame of results for each simulation.
+#'
+#' @keywords internal
 function_apply_modelcomputations_modelchoice <- function(list_combined_output,
                                                           model = c("cytoglmm",
                                                                     "cytoglm",
@@ -33,6 +35,8 @@ function_apply_modelcomputations_modelchoice <- function(list_combined_output,
 #' @param model vector, name(s) of models to test.
 #'
 #' @return data.frame of results for each simulation all models combined.
+#'
+#' @keywords internal
 function_to_compute_model_computation_onesimulation_modelchoice <- function(onevariation,
                                                                             model){
   # Split info from the mock datasets

@@ -18,3 +18,4 @@ Compute cells counts and medians.
 \details{
 Function to calculate features for diffcyt package models.
 }
+\keyword{internal}

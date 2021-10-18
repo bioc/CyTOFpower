@@ -7,14 +7,15 @@
 compute_variance(raw_data_lg)
 }
 \arguments{
-\item{raw_data_lg}{data.frame, cells values in long format}
+\item{raw_data_lg}{data.frame, cells values in long format.}
 }
 \value{
-numeric, observed variance mean
+numeric, observed variance mean.
 }
 \description{
 Compute variance
 }
 \details{
-Compute the observed variance in the data
+Compute the observed variance in the data.
 }
+\keyword{internal}

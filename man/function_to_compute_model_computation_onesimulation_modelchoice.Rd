@@ -24,3 +24,4 @@ Run DS tests for one simulation.
 \details{
 Function to run the DS tests through the different models.
 }
+\keyword{internal}
