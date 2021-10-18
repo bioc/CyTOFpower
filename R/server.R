@@ -150,8 +150,14 @@ appServer <- function(input, output, session){
                                          .data$mu0 == input$p_mu0 &
                                          .data$dispersion == input$p_dispersion)
 
-      output$p_power <- renderText(
-        paste0("Power = ", dplyr::pull(p_data_filtered, .data$power)))
+      if(dim(p_data_filtered)[1] != 0){
+        output$p_power <- renderText(
+          paste0("Power = ", dplyr::pull(p_data_filtered, .data$power)))
+      } else {
+        output$p_power <- renderText("Selected combination of parameters not precomputed in current version.
+                                   Please check back soon.")
+      }
+
     }
 
   })
