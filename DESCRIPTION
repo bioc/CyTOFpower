@@ -1,7 +1,7 @@
 Package: CyTOFpower
 Type: Package
 Title: Power analysis for CyTOF experiments
-Version: 1.4.0
+Version: 1.5.0
 Authors@R: c(person("Anne-Maud", "Ferreira",
            email = "anne-maud.ferreira@stanford.edu",
            role = c("cre", "aut"),
