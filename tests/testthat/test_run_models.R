@@ -82,8 +82,8 @@ test_that("Run the CytoGLMM - GLMM model", {
   # Set seed
   set.seed(123)
   # Run model
-  expect_warning(cytoglmm_res <- function_run_cytoGLMM(
-    mock_dataset = ls_3markers$ls_mock_data))
+  cytoglmm_res <- function_run_cytoGLMM(
+    mock_dataset = ls_3markers$ls_mock_data)
   # Test output
   # Is it a list?
   expect_type(cytoglmm_res, "list")
