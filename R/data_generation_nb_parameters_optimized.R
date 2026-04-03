@@ -249,20 +249,20 @@ function_create_mock_dataset_withmarkerinfo <- function(variation){
                                   raw_mock_dataset_expdesign_w)
   # Create long formats
   raw_mock_dataset_expdesign <- raw_mock_dataset_expdesign_w %>%
-    dplyr::group_by(.data$marker_name) %>%
+    dplyr::group_by(marker_name) %>%
     dplyr::mutate(rn = dplyr::row_number()) %>% # recreated unique identifier column
-    tidyr::pivot_wider(names_from = .data$marker_name, values_from = .data$count)
+    tidyr::pivot_wider(names_from = marker_name, values_from = count)
   raw_mock_dataset_expdesign$rn <- NULL
   mock_dataset_expdesign <- mock_dataset_expdesign_w %>%
-    dplyr::select(-c(.data$count)) %>%
-    dplyr::group_by(.data$marker_name) %>%
+    dplyr::select(-c(count)) %>%
+    dplyr::group_by(marker_name) %>%
     dplyr::mutate(rn = dplyr::row_number()) %>% # recreated unique identifier column
-    tidyr::pivot_wider(names_from = .data$marker_name,
-                       values_from = .data$transformed_values)
+    tidyr::pivot_wider(names_from = marker_name,
+                       values_from = transformed_values)
   mock_dataset_expdesign$rn <- NULL
   # Which markers are DE?
   df_var <- dplyr::bind_rows(variation)
-  df_onlyDE <- dplyr::filter(df_var, .data$rho != 1)
+  df_onlyDE <- dplyr::filter(df_var, rho != 1)
   DEmarkers_names <- as.vector(df_onlyDE$marker_name)
 
   # Create a data.frame for experiment info
