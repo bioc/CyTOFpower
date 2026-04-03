@@ -100,7 +100,7 @@ function_to_compute_model_computation_onesimulation_modelchoice <- function(onev
   allpval_res <- dplyr::bind_rows(ls_res, .id = "model")
   # Add the information about the truth, i.e. which markers have DE by design
   allpval_res <- dplyr::mutate(allpval_res,
-                               truth = ifelse(.data$marker_id %in% as.character(vec_names_DEmarkers), 1, 0))
+                               truth = ifelse(marker_id %in% as.character(vec_names_DEmarkers), 1, 0))
 
   # Return
   return(allpval_res)
