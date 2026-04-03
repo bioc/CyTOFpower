@@ -1,0 +1,9 @@
+utils::globalVariables(c(
+  "markers",
+  "group_id",
+  "marker_name",
+  "count",
+  "transformed_values",
+  "rho",
+  "marker_id"
+))
