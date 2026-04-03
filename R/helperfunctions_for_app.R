@@ -56,10 +56,10 @@ compute_effectsize <- function(raw_data_lg){
     dplyr::summarize(mean = mean(.data$raw_intensity))
   ## Mean difference
   mean_raw_data_summary_1_wd <- mean_raw_data_summary_1 %>%
-    tidyr::pivot_wider(id_cols = .data$markers,
-                       names_from = .data$group_id,
-                       values_from = .data$mean)
-  mean_diff_raw_data_summary_1_wd <- dplyr::summarize(mean_raw_data_summary_1_wd,
+    tidyr::pivot_wider(id_cols = markers,
+                       names_from = group_id,
+                       values_from = mean)
+  mean_diff_raw_data_summary_1_wd <- dplyr::reframe(mean_raw_data_summary_1_wd,
                                                       mean_diff = .data$B - .data$A,
                                                       .data$markers)
   ## Standard deviation
@@ -71,12 +71,12 @@ compute_effectsize <- function(raw_data_lg){
     dplyr::summarize(mean_sd = mean(.data$standard_deviation))
   ## Combine
   cb_raw_data <- dplyr::left_join(mean_diff_raw_data_summary_1_wd, sd_mean_raw_data_summary_1)
-  eff_size_raw_data <- dplyr::summarize(cb_raw_data,
+  eff_size_raw_data <- dplyr::reframe(cb_raw_data,
                                         effect_size = round(.data$mean_diff / .data$mean_sd, digits = 1),
                                         .data$markers)
 
   # Fold Change
-  obs_fc <- dplyr::summarize(mean_raw_data_summary_1_wd,
+  obs_fc <- dplyr::reframe(mean_raw_data_summary_1_wd,
                              observed_FC = round(.data$B / .data$A, digits = 1),
                              .data$markers)
 
