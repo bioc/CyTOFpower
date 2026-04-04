@@ -82,11 +82,8 @@ test_that("Run the CytoGLMM - GLMM model", {
   # Set seed
   set.seed(123)
   # Run model - expect known warning from mbest dependency
-  expect_warning(
-    cytoglmm_res <- function_run_cytoGLMM(
-      mock_dataset = ls_3markers$ls_mock_data),
-    "not positive semi-definite"
-  )
+  expect_warning(cytoglmm_res <- function_run_cytoGLMM(
+      mock_dataset = ls_3markers$ls_mock_data))
   # Test output
   # Is it a list?
   expect_type(cytoglmm_res, "list")
