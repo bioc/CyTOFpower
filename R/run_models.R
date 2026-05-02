@@ -15,10 +15,10 @@
 function_run_cytoGLMM <- function(mock_dataset){
   # Get marker names
   markers_names <- function_extract_marker_names(mock_dataset)
-  #Run GLMM
-  glmm_fit <- CytoGLMM::cytoglmm(mock_dataset,
+  #Run GLMM - suppress mbest warning
+  glmm_fit <- suppressWarnings(CytoGLMM::cytoglmm(mock_dataset,
                                  protein_names = markers_names,
-                                 condition = "group_id", group = "donor_id")
+                                 condition = "group_id", group = "donor_id"))
   # Plot the effects
   plot_effects <- plot(glmm_fit)
   # Summary
